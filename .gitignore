@@ -1,0 +1,25 @@
+# Entornos virtuales
+venv/
+.venv/
+env/
+ENV/
+
+# Byte-compiled / Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de datos e imágenes masivos
+*.db
+*.sqlite3
+*.sqbpro
+*.csv
+*.parquet
+*.json
+data/
+
+# Configuraciones y secretos
+.env
+.vscode/
+.idea/
+.DS_Store
