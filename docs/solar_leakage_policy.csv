@@ -1,0 +1,14 @@
+﻿id,control,regla
+L01,Split temporal,No mezclar fechas futuras en train.
+L02,Split por entidad,Agrupar un mismo usuario en un solo fold.
+L03,Ventanas históricas,Media/variabilidad/tendencia solo con meses <= fecha_corte.
+L04,Tarifas,Tendencias/promedios solo con tarifas <= fecha_corte.
+L05,UPME/IDEAM,Usar municipio+mes compatible con fecha de corte.
+L06,IGAC,Usar el corte catastral disponible en la fecha de decisión.
+L07,Sisbén,"Usar corte 2022 como contexto estructural, no como estado 2026."
+L08,SAIDI/SAIFI,Usar último año disponible <= fecha de corte.
+L09,Target-derived,"No usar payback, ahorro, generación, VAN o TIR como features."
+L10,IDs,"NIU, llave, factura, alimentador y transformador solo para joins/agregación."
+L11,Preprocesamiento,Imputadores/escaladores/encoders/selección solo con train.
+L12,Escenarios,Train/test con perfiles y semillas independientes.
+L13,Calibración,"Calibrar con validation, nunca con test."

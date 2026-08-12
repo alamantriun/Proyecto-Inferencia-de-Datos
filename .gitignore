@@ -1,3 +1,7 @@
+# ─────────────────────────────────────────────────────────────────────
+# Solar-Rank .gitignore
+# ─────────────────────────────────────────────────────────────────────
+
 # Entornos virtuales
 venv/
 .venv/
@@ -8,18 +12,44 @@ ENV/
 __pycache__/
 *.py[cod]
 *$py.class
+*.egg-info/
+dist/
+build/
 
-# Archivos de datos e imágenes masivos
+# Datos (demasiado grandes para Git)
+data/raw/
+data/interim/
+data/processed/
+data/external/
 *.db
 *.sqlite3
 *.sqbpro
-*.csv
 *.parquet
-*.json
-data/
+
+# Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Modelos entrenados
+models/
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.onnx
+*.cbm
+
+# Reportes generados (figuras se versionan, datos no)
+reports/tables/*.json
+reports/tables/*.csv
 
 # Configuraciones y secretos
 .env
 .vscode/
 .idea/
 .DS_Store
+
+# OS
+Thumbs.db
+*.swp
+*.swo
+*~

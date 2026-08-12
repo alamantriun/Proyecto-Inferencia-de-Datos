@@ -1,0 +1,13 @@
+﻿tabla,fuente,granularidad,contenido
+sui_facturacion_raw,SUI 1743,usuario-periodo,"Consumo, días, tipo usuario/tarifa, municipio, fechas"
+sui_features,Derivado,usuario-fecha_corte,Media/variabilidad/tendencia de consumo
+tarifas_superservicios,Superservicios T3-T4,mercado-estrato-mes,Tarifa y subsidio
+tarifas_region,EPM u otro mercado,mercado-mes,Costos regionales
+upme_radiacion,UPME,municipio-mes,Recurso solar
+ideam_clima,IDEAM,municipio/estación-mes,Clima
+igac_catastro,IGAC/LADM-COL,predio/unidad-construcción,"Área, plantas, año, uso"
+sisben_vivienda,DNP,vivienda-municipio,"Tipo, zona, cuartos, hogares"
+red_calidad,XM/SIMEM,operador-año,SAIDI/SAIFI
+usuario_red,SUI 438,usuario-red,Alimentador/transformador
+sistema_escenarios,Diseño/cotización,caso-instalacion,"Potencia, costo, eficiencia, batería"
+model_mart,Derivado,caso/usuario-fecha_corte,Features + targets

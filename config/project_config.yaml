@@ -1,0 +1,277 @@
+# =============================================================================
+# Solar-Rank: Configuración Central del Proyecto
+# =============================================================================
+# Predicción y priorización de hogares con alta viabilidad económica
+# para energía solar en Colombia.
+# =============================================================================
+
+project:
+  name: "Solar-Rank"
+  version: "0.1.0"
+  description: >
+    Predicción y priorización de hogares con alta viabilidad económica
+    para energía solar en Colombia.
+  target_primary: "payback_le_5"           # P(payback <= 5 años)
+  target_secondary: "payback_years"        # Estimación continua
+  country: "Colombia"
+
+# ─────────────────────────────────────────────────────────────────────
+# Fuentes de datos
+# ─────────────────────────────────────────────────────────────────────
+sources:
+  sui_facturacion:
+    name: "SUI Formato 1743 - Facturación a Usuarios"
+    url: "https://www.datos.gov.co/Minas-y-Energ-a/Superservicios-Facturaci-n-a-Usuarios-Energia/gw2d-7n7y"
+    api_endpoint: "https://www.datos.gov.co/resource/gw2d-7n7y.json"
+    format: "SODA API / CSV"
+    granularity: "usuario-periodo"
+    variables:
+      - consumo_kwh_mes
+      - dias_facturados
+      - tipo_usuario
+      - tipo_tarifa
+      - municipio
+      - departamento
+      - fecha_facturacion
+
+  superservicios_tarifas:
+    name: "Superservicios Tarifas Publicadas Energía"
+    url: "https://www.datos.gov.co/Minas-y-Energ-a/Superservicios-Tarifas-Publicadas-Energia/4is2-3nif"
+    api_endpoint: "https://www.datos.gov.co/resource/4is2-3nif.json"
+    format: "SODA API / CSV"
+    granularity: "mercado-estrato-mes"
+    variables:
+      - estrato_sector
+      - porcentaje_subsidio
+      - tarifa_nivel1_cop_kwh
+      - mercado
+
+  upme_radiacion:
+    name: "UPME Predicción de Radiación Solar"
+    url: "https://geo.upme.gov.co/server/rest/services/Capas_FuenteEnergia_Solar/prediccion_radiacion/FeatureServer"
+    format: "ArcGIS FeatureServer REST"
+    granularity: "municipio-mes"
+    variables:
+      - radiacion_kwh_m2_dia
+      - radiacion_min_kwh_m2_dia
+      - radiacion_max_kwh_m2_dia
+
+  ideam_clima:
+    name: "IDEAM Atlas Climatológico"
+    url: "https://www.ideam.gov.co/AtlasWeb/"
+    format: "Web / estaciones"
+    granularity: "estacion-mes"
+    variables:
+      - insolacion_horas_dia
+      - temperatura_media_c
+      - temperatura_maxima_c
+      - temperatura_minima_c
+      - precipitacion_mm
+      - humedad_relativa_pct
+
+  igac_catastro:
+    name: "IGAC LADM-COL"
+    url: "https://serviciaf.igac.gov.co/root/LADM_COL/"
+    format: "REST / GeoJSON"
+    granularity: "predio-unidad_construccion"
+    variables:
+      - area_construida_m2
+      - area_terreno_m2
+      - total_plantas
+      - anio_construccion
+      - uso_construccion
+
+  sisben_vivienda:
+    name: "DNP Sisbén Vivienda"
+    url: "https://www.datos.gov.co/Estad-sticas-Nacionales/DNP-Sisb-n-Vivienda/np8m-kdhq"
+    api_endpoint: "https://www.datos.gov.co/resource/np8m-kdhq.json"
+    format: "SODA API / CSV"
+    granularity: "vivienda-municipio"
+    corte: "2022-03"
+    variables:
+      - zona_urbana_rural
+      - tipo_vivienda
+      - numero_cuartos_vivienda
+      - numero_hogares_vivienda
+      - material_paredes
+
+  sisben_hogares:
+    name: "DNP Sisbén Hogares"
+    url: "https://www.datos.gov.co/Estad-sticas-Nacionales/DNP-Sisb-n-Hogares/ab8a-uwf7"
+    api_endpoint: "https://www.datos.gov.co/resource/ab8a-uwf7.json"
+    format: "SODA API / CSV"
+    granularity: "hogar-municipio"
+
+  saidi_saifi:
+    name: "XM/SIMEM - Indicadores de Calidad"
+    url: "https://www.datos.gov.co/dataset/Informe-Anual-de-Operadores-de-Red/f2yr-8sxq"
+    api_endpoint: "https://www.datos.gov.co/resource/f2yr-8sxq.json"
+    format: "SODA API / CSV"
+    granularity: "operador-año"
+    variables:
+      - saidi_horas
+      - saifi_eventos
+
+  usuario_red:
+    name: "Superservicios Formato 438"
+    url: "https://www.datos.gov.co/en/en/Mining-and-Energy/Superservicios-V-nculo-usuario-alimentador-usuario/jhim-bsjc"
+    api_endpoint: "https://www.datos.gov.co/resource/jhim-bsjc.json"
+    format: "SODA API / CSV"
+    granularity: "usuario-red"
+    nota: "Solo para joins/agregaciones, NUNCA como predictor directo"
+
+# ─────────────────────────────────────────────────────────────────────
+# Parámetros de escenarios de instalación solar
+# ─────────────────────────────────────────────────────────────────────
+escenarios:
+  parametros:
+    potencia_sistema_kwp: [1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0]
+    costo_por_kwp_cop: [3_500_000, 4_000_000, 4_500_000, 5_000_000, 5_500_000]
+    eficiencia_sistema_pct: [0.75, 0.80, 0.85]
+    degradacion_anual_pct: [0.005, 0.007, 0.01]
+    mantenimiento_anual_pct_inversion: [0.01, 0.015, 0.02]
+    autoconsumo_ratio: [0.60, 0.70, 0.80, 0.90, 1.00]
+    valor_excedente_cop_kwh: [0, 50, 100, 150]
+    bateria_si_no: [0, 1]
+    capacidad_bateria_kwh: [0, 5, 10]
+
+  restricciones:
+    - "si bateria_si_no == 0, capacidad_bateria_kwh debe ser 0"
+    - "costo_instalacion = potencia_sistema_kwp * costo_por_kwp_cop + costo_bateria"
+    - "mantenimiento = costo_instalacion * mantenimiento_anual_pct_inversion"
+
+# ─────────────────────────────────────────────────────────────────────
+# Target engineering
+# ─────────────────────────────────────────────────────────────────────
+target:
+  payback_formula: >
+    payback_years = costo_instalacion_cop / ahorro_anual_neto_cop
+    donde ahorro_anual_neto = (autoconsumo * generacion * tarifa)
+                            + (excedente * generacion * (1-autoconsumo) * valor_excedente)
+                            - mantenimiento_anual
+  payback_threshold_years: 5
+  payback_le_5_rule: "1 si payback_years <= 5, 0 si payback_years > 5"
+
+# ─────────────────────────────────────────────────────────────────────
+# Split strategy
+# ─────────────────────────────────────────────────────────────────────
+split:
+  strategy: "temporal_grouped"
+  group_column: "usuario_id"
+  temporal_column: "fecha_corte"
+  train_ratio: 0.7
+  validation_ratio: 0.15
+  test_ratio: 0.15
+  nota: >
+    - No mezclar registros del mismo usuario entre splits.
+    - Dividir primero por fecha_corte, luego por entidad.
+    - Calibración solo con validation, nunca con test.
+
+# ─────────────────────────────────────────────────────────────────────
+# Modelos a entrenar
+# ─────────────────────────────────────────────────────────────────────
+models:
+  logistic_regression:
+    role: "baseline"
+    library: "scikit-learn"
+    justification: >
+      Establece si existe una relación linealmente separable entre
+      las features y el target. Referencia obligatoria para medir
+      si modelos más complejos aportan mejora real.
+
+  catboost:
+    role: "tabular_strong"
+    library: "catboost"
+    justification: >
+      Manejo nativo de categóricas, robusto ante missing values,
+      buen desempeño en datos tabulares heterogéneos.
+      Ideal para el mix de variables energéticas, económicas y
+      geográficas del proyecto.
+
+  temporal_fusion_transformer:
+    role: "advanced"
+    library: "pytorch-forecasting"
+    justification: >
+      Captura dependencias temporales en las 12 ventanas mensuales
+      de consumo/tarifa/clima junto con variables estáticas.
+      Solo se justifica si supera a CatBoost en el ablation study.
+    sequence_length: 12
+    static_features:
+      - municipio
+      - estrato_sector
+      - tipo_vivienda
+      - area_construida_m2
+      - potencia_sistema_kwp
+      - costo_instalacion_cop
+      - bateria_si_no
+    temporal_features:
+      - consumo_kwh_mes
+      - tarifa_nivel1_cop_kwh
+      - radiacion_kwh_m2_dia
+      - insolacion_horas_dia
+      - temperatura_media_c
+      - precipitacion_mm
+      - humedad_relativa_pct
+
+# ─────────────────────────────────────────────────────────────────────
+# Evaluación
+# ─────────────────────────────────────────────────────────────────────
+evaluation:
+  classification_metrics:
+    - ROC-AUC
+    - PR-AUC
+    - Accuracy
+    - Precision
+    - Recall
+    - F1
+    - Brier Score
+
+  regression_metrics:
+    - MAE
+    - RMSE
+    - R2
+
+  baselines_to_compare:
+    - "regla: radiación > umbral"
+    - "regla: consumo > umbral"
+    - "Logistic Regression"
+    - "CatBoost"
+    - "Temporal Fusion Transformer"
+
+  ablation_study:
+    sets:
+      A: ["consumo"]
+      B: ["consumo", "tarifa"]
+      C: ["consumo", "tarifa", "radiación"]
+      D: ["consumo", "tarifa", "radiación", "clima"]
+      E: ["consumo", "tarifa", "radiación", "clima", "vivienda"]
+      F: ["consumo", "tarifa", "radiación", "clima", "vivienda", "red"]
+      G: ["consumo", "tarifa", "radiación", "clima", "vivienda", "red", "sistema"]
+    metrics_tracked:
+      - ROC-AUC
+      - Brier
+      - F1
+      - MAE
+
+# ─────────────────────────────────────────────────────────────────────
+# Infraestructura objetivo
+# ─────────────────────────────────────────────────────────────────────
+infrastructure:
+  cpu_cores: "8-16"
+  ram_gb: 64
+  gpu_vram_gb: "16-24"
+  ssd_gb: "500-1000"
+  training_env: "Google Colab Pro+ / Cloud VM"
+  inference_env: "Local / API ligera"
+
+# ─────────────────────────────────────────────────────────────────────
+# Salida final por hogar/caso
+# ─────────────────────────────────────────────────────────────────────
+output:
+  per_case:
+    - probabilidad_payback_le_5
+    - payback_estimado_years
+    - clasificacion_viabilidad   # ALTA / MEDIA / BAJA
+    - top_features_influyentes
+    - incertidumbre_calibracion
+    - comparacion_vs_reglas_simples
