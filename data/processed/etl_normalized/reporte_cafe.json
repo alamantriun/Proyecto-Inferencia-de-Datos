@@ -1,0 +1,339 @@
+{
+  "cultivo": "cafe",
+  "timestamp": "2026-08-13T14:17:44.397567",
+  "estadisticas_entrada": {
+    "filas": 12277,
+    "columnas": 64,
+    "columnas_lista": [
+      "departamento",
+      "municipio",
+      "cultivo",
+      "anio",
+      "fuente_eva",
+      "split",
+      "area_sembrada_ha",
+      "area_cosechada_ha",
+      "produccion_t",
+      "rendimiento_t_ha",
+      "rendimiento_lag_1",
+      "rendimiento_lag_2",
+      "rendimiento_lag_3",
+      "produccion_lag_1",
+      "area_cosechada_lag_1",
+      "area_sembrada_lag_1",
+      "media_rendimiento_3y",
+      "variabilidad_rendimiento_3y",
+      "tendencia_rendimiento_3y",
+      "es_outlier_rendimiento",
+      "dato_copiado",
+      "inconsistencia_rend",
+      "score_confiabilidad",
+      "precipitacion_acumulada_mm",
+      "dias_lluvia",
+      "intensidad_max_diaria_mm",
+      "precipitacion_mediana_diaria",
+      "precip_Q3_mm",
+      "ratio_concentracion_lluvia",
+      "cv_precipitacion_mensual",
+      "max_dias_secos_consecutivos",
+      "ph_media",
+      "num_muestras_suelo",
+      "ph_variabilidad",
+      "materia_organica_pct_media",
+      "materia_organica_pct_variabilidad",
+      "fosforo_ppm_media",
+      "fosforo_ppm_variabilidad",
+      "calcio_meq_media",
+      "calcio_meq_variabilidad",
+      "magnesio_meq_media",
+      "magnesio_meq_variabilidad",
+      "potasio_meq_media",
+      "potasio_meq_variabilidad",
+      "salinidad_ds_m_media",
+      "salinidad_ds_m_variabilidad",
+      "tendencia_ph",
+      "tendencia_materia_organica_pct",
+      "tendencia_fosforo_ppm",
+      "tendencia_calcio_meq",
+      "tendencia_magnesio_meq",
+      "tendencia_potasio_meq",
+      "tendencia_salinidad_ds_m",
+      "credito_total",
+      "colocacion_total",
+      "num_operaciones_credito",
+      "credito_promedio_operacion",
+      "log_credito_total",
+      "precio_internacional_usd",
+      "precio_internacional_max",
+      "precio_internacional_min",
+      "volatilidad_precio",
+      "cambio_precio_pct",
+      "rango_precio_ratio"
+    ]
+  },
+  "estadisticas_salida": {
+    "filas": 12277,
+    "columnas": 64,
+    "variables_normalizadas": [
+      "anio",
+      "area_sembrada_ha",
+      "area_cosechada_ha",
+      "produccion_t",
+      "rendimiento_t_ha",
+      "rendimiento_lag_1",
+      "rendimiento_lag_2",
+      "rendimiento_lag_3",
+      "produccion_lag_1",
+      "area_cosechada_lag_1",
+      "area_sembrada_lag_1",
+      "media_rendimiento_3y",
+      "variabilidad_rendimiento_3y",
+      "tendencia_rendimiento_3y",
+      "es_outlier_rendimiento",
+      "dato_copiado",
+      "inconsistencia_rend",
+      "score_confiabilidad",
+      "ph_media",
+      "num_muestras_suelo",
+      "ph_variabilidad",
+      "materia_organica_pct_media",
+      "materia_organica_pct_variabilidad",
+      "fosforo_ppm_media",
+      "fosforo_ppm_variabilidad",
+      "calcio_meq_media",
+      "calcio_meq_variabilidad",
+      "magnesio_meq_media",
+      "magnesio_meq_variabilidad",
+      "potasio_meq_media",
+      "potasio_meq_variabilidad",
+      "salinidad_ds_m_media",
+      "salinidad_ds_m_variabilidad",
+      "tendencia_ph",
+      "tendencia_materia_organica_pct",
+      "tendencia_fosforo_ppm",
+      "tendencia_calcio_meq",
+      "tendencia_magnesio_meq",
+      "tendencia_potasio_meq",
+      "tendencia_salinidad_ds_m",
+      "credito_total",
+      "colocacion_total",
+      "num_operaciones_credito",
+      "credito_promedio_operacion",
+      "log_credito_total",
+      "precio_internacional_usd",
+      "precio_internacional_max",
+      "precio_internacional_min",
+      "volatilidad_precio",
+      "cambio_precio_pct",
+      "rango_precio_ratio"
+    ]
+  },
+  "transformaciones": [],
+  "advertencias": [],
+  "parametros_normalizacion": {
+    "anio": {
+      "mean": 2015.5052537264803,
+      "std": 5.184287380013123
+    },
+    "area_sembrada_ha": {
+      "mean": 1379.0433420216664,
+      "std": 1987.3037172789523
+    },
+    "area_cosechada_ha": {
+      "mean": 1143.1407053840514,
+      "std": 1626.8444982362578
+    },
+    "produccion_t": {
+      "mean": 1176.9273022725422,
+      "std": 1891.3451249165053
+    },
+    "rendimiento_t_ha": {
+      "mean": 0.9626338567349729,
+      "std": 0.302664419740802
+    },
+    "rendimiento_lag_1": {
+      "mean": 0.9604949941433717,
+      "std": 0.3540698439304919
+    },
+    "rendimiento_lag_2": {
+      "mean": 0.9650755185352377,
+      "std": 0.34516276980458305
+    },
+    "rendimiento_lag_3": {
+      "mean": 0.9718179204663775,
+      "std": 0.3388819759170179
+    },
+    "produccion_lag_1": {
+      "mean": 1140.0132108821374,
+      "std": 1825.5874967586678
+    },
+    "area_cosechada_lag_1": {
+      "mean": 1121.1302362140589,
+      "std": 1589.7156935931682
+    },
+    "area_sembrada_lag_1": {
+      "mean": 1348.8336841247863,
+      "std": 1938.0048710323183
+    },
+    "media_rendimiento_3y": {
+      "mean": 0.955348941589885,
+      "std": 0.28624169682142314
+    },
+    "variabilidad_rendimiento_3y": {
+      "mean": 0.16688875237565287,
+      "std": 0.2567646466558015
+    },
+    "tendencia_rendimiento_3y": {
+      "mean": 0.0007237493416495034,
+      "std": 0.3799473481452052
+    },
+    "es_outlier_rendimiento": {
+      "mean": 0.0,
+      "std": 1
+    },
+    "dato_copiado": {
+      "mean": 0.034536124460373054,
+      "std": 0.1826016992462849
+    },
+    "inconsistencia_rend": {
+      "mean": 0.0,
+      "std": 1
+    },
+    "score_confiabilidad": {
+      "mean": 0.9400684206239309,
+      "std": 0.06375673260069291
+    },
+    "ph_media": {
+      "mean": 5.630567524720559,
+      "std": 0.6117690860940785
+    },
+    "num_muestras_suelo": {
+      "mean": 18.181396106540685,
+      "std": 35.53657974122418
+    },
+    "ph_variabilidad": {
+      "mean": 0.5033324357658296,
+      "std": 0.2472889081282922
+    },
+    "materia_organica_pct_media": {
+      "mean": 4.243462972265552,
+      "std": 2.578272113866146
+    },
+    "materia_organica_pct_variabilidad": {
+      "mean": 1.9151780011640753,
+      "std": 1.3678021217342227
+    },
+    "fosforo_ppm_media": {
+      "mean": 17.829357892013153,
+      "std": 25.40516840417526
+    },
+    "fosforo_ppm_variabilidad": {
+      "mean": 18.976684520611116,
+      "std": 33.00512659810051
+    },
+    "calcio_meq_media": {
+      "mean": 6.45101164491691,
+      "std": 5.526127455084428
+    },
+    "calcio_meq_variabilidad": {
+      "mean": 4.318796070927832,
+      "std": 3.5379428236120978
+    },
+    "magnesio_meq_media": {
+      "mean": 1.7022433137789057,
+      "std": 1.9839205575784695
+    },
+    "magnesio_meq_variabilidad": {
+      "mean": 1.1499463972604722,
+      "std": 1.537353381493164
+    },
+    "potasio_meq_media": {
+      "mean": 0.33439711009118095,
+      "std": 0.2831502750281327
+    },
+    "potasio_meq_variabilidad": {
+      "mean": 0.2393802941460957,
+      "std": 0.4978194855455856
+    },
+    "salinidad_ds_m_media": {
+      "mean": 0.3140530598501788,
+      "std": 0.48417495577608227
+    },
+    "salinidad_ds_m_variabilidad": {
+      "mean": 0.20491205428137454,
+      "std": 0.4052329791700348
+    },
+    "tendencia_ph": {
+      "mean": 0.007881658403585711,
+      "std": 0.08377636805796079
+    },
+    "tendencia_materia_organica_pct": {
+      "mean": 0.053550112349677985,
+      "std": 0.5084317595355495
+    },
+    "tendencia_fosforo_ppm": {
+      "mean": 0.2362968124531053,
+      "std": 1.9052470253876104
+    },
+    "tendencia_calcio_meq": {
+      "mean": 0.2773720257009344,
+      "std": 1.1978985280789702
+    },
+    "tendencia_magnesio_meq": {
+      "mean": 0.2819075401412588,
+      "std": 1.1785583138126778
+    },
+    "tendencia_potasio_meq": {
+      "mean": 0.16729027689771242,
+      "std": 0.866208911916506
+    },
+    "tendencia_salinidad_ds_m": {
+      "mean": 0.12074750474690157,
+      "std": 1.0096992570419054
+    },
+    "credito_total": {
+      "mean": 4704816.99484857,
+      "std": 32605978.616185997
+    },
+    "colocacion_total": {
+      "mean": 3690076.300154761,
+      "std": 26514373.026630107
+    },
+    "num_operaciones_credito": {
+      "mean": 0.36971572859819174,
+      "std": 2.778231106147166
+    },
+    "credito_promedio_operacion": {
+      "mean": 1056076.0704704162,
+      "std": 7136269.35944404
+    },
+    "log_credito_total": {
+      "mean": 1.2757135961817865,
+      "std": 4.525298123116361
+    },
+    "precio_internacional_usd": {
+      "mean": 3027.775515191008,
+      "std": 114.52632165305012
+    },
+    "precio_internacional_max": {
+      "mean": 3027.775515191008,
+      "std": 114.52632165305012
+    },
+    "precio_internacional_min": {
+      "mean": 3027.775515191008,
+      "std": 114.52632165305012
+    },
+    "volatilidad_precio": {
+      "mean": 0.0,
+      "std": 1
+    },
+    "cambio_precio_pct": {
+      "mean": 0.9258505063669196,
+      "std": 3.817544055101672
+    },
+    "rango_precio_ratio": {
+      "mean": 1.0,
+      "std": 1
+    }
+  }
+}

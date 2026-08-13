@@ -1,0 +1,17 @@
+{
+  "pipeline": "Model Mart ETL - Normalización",
+  "fecha": "2026-08-13T14:17:58.686646",
+  "cultivos_procesados": [
+    "arroz",
+    "cacao",
+    "cafe",
+    "platano"
+  ],
+  "total_cultivos": 4,
+  "reportes_individuales": {
+    "arroz": "reporte_arroz.json",
+    "cacao": "reporte_cacao.json",
+    "cafe": "reporte_cafe.json",
+    "platano": "reporte_platano.json"
+  }
+}
