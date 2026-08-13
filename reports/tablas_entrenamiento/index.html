@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablas de Entrenamiento - Modelos de Rendimiento Agrícola</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .producto-section {
+            margin-bottom: 50px;
+            page-break-inside: avoid;
+        }
+        
+        .producto-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .producto-stats {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .variable-group {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            border-radius: 4px;
+        }
+        
+        .group-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .group-title::before {
+            content: "▸";
+            margin-right: 10px;
+            font-size: 1.4em;
+        }
+        
+        .variables-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .variable-item {
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #764ba2;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            word-break: break-word;
+        }
+        
+        .table-preview {
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+        
+        .table-preview h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 0.85em;
+        }
+        
+        thead {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tbody tr:hover {
+            background: #f5f5f5;
+        }
+        
+        tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .empty-data {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+        
+        .footer {
+            background: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #764ba2;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            .producto-section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Tablas de Entrenamiento</h1>
+            <p>Modelos de Predicción de Rendimiento Agrícola</p>
+            <p style="margin-top: 10px; font-size: 0.95em;">Arroz • Cacao • Café • Plátano</p>
+        </div>
+        
+        <div class="content">
+
+            <div class="producto-section">
+                <div class="producto-title">
+                    <span>🌾 Arroz</span>
+                    <span class="producto-stats">7656 filas × 64 variables</span>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Identificadores</div>
+                    <div class="variables-list">
+                        <div class="variable-item">departamento</div>
+                        <div class="variable-item">municipio</div>
+                        <div class="variable-item">cultivo</div>
+                        <div class="variable-item">anio</div>
+                        <div class="variable-item">fuente_eva</div>
+                        <div class="variable-item">split</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Producción e Historia (Panel)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">area_sembrada_ha</div>
+                        <div class="variable-item">area_cosechada_ha</div>
+                        <div class="variable-item">produccion_t</div>
+                        <div class="variable-item">rendimiento_t_ha</div>
+                        <div class="variable-item">rendimiento_lag_1</div>
+                        <div class="variable-item">rendimiento_lag_2</div>
+                        <div class="variable-item">rendimiento_lag_3</div>
+                        <div class="variable-item">produccion_lag_1</div>
+                        <div class="variable-item">area_cosechada_lag_1</div>
+                        <div class="variable-item">area_sembrada_lag_1</div>
+                        <div class="variable-item">media_rendimiento_3y</div>
+                        <div class="variable-item">variabilidad_rendimiento_3y</div>
+                        <div class="variable-item">tendencia_rendimiento_3y</div>
+                        <div class="variable-item">es_outlier_rendimiento</div>
+                        <div class="variable-item">dato_copiado</div>
+                        <div class="variable-item">inconsistencia_rend</div>
+                        <div class="variable-item">score_confiabilidad</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Clima (IDEAM)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">precipitacion_acumulada_mm</div>
+                        <div class="variable-item">dias_lluvia</div>
+                        <div class="variable-item">intensidad_max_diaria_mm</div>
+                        <div class="variable-item">precipitacion_mediana_diaria</div>
+                        <div class="variable-item">precip_Q3_mm</div>
+                        <div class="variable-item">ratio_concentracion_lluvia</div>
+                        <div class="variable-item">cv_precipitacion_mensual</div>
+                        <div class="variable-item">max_dias_secos_consecutivos</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Suelos (AGROSAVIA)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">ph_media</div>
+                        <div class="variable-item">num_muestras_suelo</div>
+                        <div class="variable-item">ph_variabilidad</div>
+                        <div class="variable-item">materia_organica_pct_media</div>
+                        <div class="variable-item">materia_organica_pct_variabilidad</div>
+                        <div class="variable-item">fosforo_ppm_media</div>
+                        <div class="variable-item">fosforo_ppm_variabilidad</div>
+                        <div class="variable-item">calcio_meq_media</div>
+                        <div class="variable-item">calcio_meq_variabilidad</div>
+                        <div class="variable-item">magnesio_meq_media</div>
+                        <div class="variable-item">magnesio_meq_variabilidad</div>
+                        <div class="variable-item">potasio_meq_media</div>
+                        <div class="variable-item">potasio_meq_variabilidad</div>
+                        <div class="variable-item">salinidad_ds_m_media</div>
+                        <div class="variable-item">salinidad_ds_m_variabilidad</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Tendencias de Suelo</div>
+                    <div class="variables-list">
+                        <div class="variable-item">tendencia_ph</div>
+                        <div class="variable-item">tendencia_materia_organica_pct</div>
+                        <div class="variable-item">tendencia_fosforo_ppm</div>
+                        <div class="variable-item">tendencia_calcio_meq</div>
+                        <div class="variable-item">tendencia_magnesio_meq</div>
+                        <div class="variable-item">tendencia_potasio_meq</div>
+                        <div class="variable-item">tendencia_salinidad_ds_m</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Inversión (FINAGRO)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">credito_total</div>
+                        <div class="variable-item">colocacion_total</div>
+                        <div class="variable-item">num_operaciones_credito</div>
+                        <div class="variable-item">credito_promedio_operacion</div>
+                        <div class="variable-item">log_credito_total</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Precio Internacional (FRED)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">precio_internacional_usd</div>
+                        <div class="variable-item">precio_internacional_max</div>
+                        <div class="variable-item">precio_internacional_min</div>
+                        <div class="variable-item">volatilidad_precio</div>
+                        <div class="variable-item">cambio_precio_pct</div>
+                        <div class="variable-item">rango_precio_ratio</div>
+
+                    </div>
+                </div>
+
+                <div class="table-preview">
+                    <h3>📋 Primeras 5 filas de datos</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>departamento</th>
+                                <th>municipio</th>
+                                <th>cultivo</th>
+                                <th>anio</th>
+                                <th>fuente_eva</th>
+                                <th>split</th>
+                                <th>area_sembrada_ha</th>
+                                <th>area_cosechada_ha</th>
+                                <th>produccion_t</th>
+                                <th>rendimiento_t_ha</th>
+                                <th>rendimiento_lag_1</th>
+                                <th>rendimiento_lag_2</th>
+                                <th>rendimiento_lag_3</th>
+                                <th>produccion_lag_1</th>
+                                <th>area_cosechada_lag_1</th>
+                                <th style="color: #aaa;">+49 más</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>META</td>
+                                <td>ACACIAS</td>
+                                <td>ARROZ</td>
+                                <td>2006</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>150.0</td>
+                                <td>150.0</td>
+                                <td>840.0</td>
+                                <td>5.6</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>META</td>
+                                <td>ACACIAS</td>
+                                <td>ARROZ</td>
+                                <td>2007</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>1906.0</td>
+                                <td>1906.0</td>
+                                <td>10884.0</td>
+                                <td>5.710388247639035</td>
+                                <td>5.6</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>840.0</td>
+                                <td>150.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>META</td>
+                                <td>ACACIAS</td>
+                                <td>ARROZ</td>
+                                <td>2008</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>1916.0</td>
+                                <td>1916.0</td>
+                                <td>10101.0</td>
+                                <td>5.271920668058455</td>
+                                <td>5.710388247639035</td>
+                                <td>5.6</td>
+                                <td>-</td>
+                                <td>10884.0</td>
+                                <td>1906.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>META</td>
+                                <td>ACACIAS</td>
+                                <td>ARROZ</td>
+                                <td>2009</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>477.0</td>
+                                <td>477.0</td>
+                                <td>2635.0</td>
+                                <td>5.524109014675052</td>
+                                <td>5.271920668058455</td>
+                                <td>5.710388247639035</td>
+                                <td>5.6</td>
+                                <td>10101.0</td>
+                                <td>1916.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>META</td>
+                                <td>ACACIAS</td>
+                                <td>ARROZ</td>
+                                <td>2010</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>238.0</td>
+                                <td>238.0</td>
+                                <td>1288.0</td>
+                                <td>5.411764705882353</td>
+                                <td>5.524109014675052</td>
+                                <td>5.271920668058455</td>
+                                <td>5.710388247639035</td>
+                                <td>2635.0</td>
+                                <td>477.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="producto-section">
+                <div class="producto-title">
+                    <span>🌾 Cacao</span>
+                    <span class="producto-stats">11665 filas × 74 variables</span>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Identificadores</div>
+                    <div class="variables-list">
+                        <div class="variable-item">departamento</div>
+                        <div class="variable-item">municipio</div>
+                        <div class="variable-item">cultivo</div>
+                        <div class="variable-item">anio</div>
+                        <div class="variable-item">fuente_eva</div>
+                        <div class="variable-item">split</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Producción e Historia (Panel)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">area_sembrada_ha</div>
+                        <div class="variable-item">area_cosechada_ha</div>
+                        <div class="variable-item">produccion_t</div>
+                        <div class="variable-item">rendimiento_t_ha</div>
+                        <div class="variable-item">rendimiento_lag_1</div>
+                        <div class="variable-item">rendimiento_lag_2</div>
+                        <div class="variable-item">rendimiento_lag_3</div>
+                        <div class="variable-item">produccion_lag_1</div>
+                        <div class="variable-item">area_cosechada_lag_1</div>
+                        <div class="variable-item">area_sembrada_lag_1</div>
+                        <div class="variable-item">media_rendimiento_3y</div>
+                        <div class="variable-item">variabilidad_rendimiento_3y</div>
+                        <div class="variable-item">tendencia_rendimiento_3y</div>
+                        <div class="variable-item">es_outlier_rendimiento</div>
+                        <div class="variable-item">dato_copiado</div>
+                        <div class="variable-item">inconsistencia_rend</div>
+                        <div class="variable-item">score_confiabilidad</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Clima (IDEAM)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">precipitacion_acumulada_mm</div>
+                        <div class="variable-item">dias_lluvia</div>
+                        <div class="variable-item">intensidad_max_diaria_mm</div>
+                        <div class="variable-item">precipitacion_mediana_diaria</div>
+                        <div class="variable-item">precip_Q3_mm</div>
+                        <div class="variable-item">ratio_concentracion_lluvia</div>
+                        <div class="variable-item">cv_precipitacion_mensual</div>
+                        <div class="variable-item">max_dias_secos_consecutivos</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Suelos (AGROSAVIA)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">ph_media</div>
+                        <div class="variable-item">num_muestras_suelo</div>
+                        <div class="variable-item">ph_variabilidad</div>
+                        <div class="variable-item">materia_organica_pct_media</div>
+                        <div class="variable-item">materia_organica_pct_variabilidad</div>
+                        <div class="variable-item">fosforo_ppm_media</div>
+                        <div class="variable-item">fosforo_ppm_variabilidad</div>
+                        <div class="variable-item">calcio_meq_media</div>
+                        <div class="variable-item">calcio_meq_variabilidad</div>
+                        <div class="variable-item">magnesio_meq_media</div>
+                        <div class="variable-item">magnesio_meq_variabilidad</div>
+                        <div class="variable-item">potasio_meq_media</div>
+                        <div class="variable-item">potasio_meq_variabilidad</div>
+                        <div class="variable-item">salinidad_ds_m_media</div>
+                        <div class="variable-item">salinidad_ds_m_variabilidad</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Tendencias de Suelo</div>
+                    <div class="variables-list">
+                        <div class="variable-item">tendencia_ph</div>
+                        <div class="variable-item">tendencia_materia_organica_pct</div>
+                        <div class="variable-item">tendencia_fosforo_ppm</div>
+                        <div class="variable-item">tendencia_calcio_meq</div>
+                        <div class="variable-item">tendencia_magnesio_meq</div>
+                        <div class="variable-item">tendencia_potasio_meq</div>
+                        <div class="variable-item">tendencia_salinidad_ds_m</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Inversión (FINAGRO)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">credito_total</div>
+                        <div class="variable-item">colocacion_total</div>
+                        <div class="variable-item">num_operaciones_credito</div>
+                        <div class="variable-item">credito_promedio_operacion</div>
+                        <div class="variable-item">log_credito_total</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Precio Internacional (FRED)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">precio_internacional_usd</div>
+                        <div class="variable-item">precio_internacional_max</div>
+                        <div class="variable-item">precio_internacional_min</div>
+                        <div class="variable-item">volatilidad_precio</div>
+                        <div class="variable-item">cambio_precio_pct</div>
+                        <div class="variable-item">rango_precio_ratio</div>
+
+                    </div>
+                </div>
+
+                <div class="table-preview">
+                    <h3>📋 Primeras 5 filas de datos</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>departamento</th>
+                                <th>municipio</th>
+                                <th>cultivo</th>
+                                <th>anio</th>
+                                <th>fuente_eva</th>
+                                <th>split</th>
+                                <th>area_sembrada_ha</th>
+                                <th>area_cosechada_ha</th>
+                                <th>produccion_t</th>
+                                <th>rendimiento_t_ha</th>
+                                <th>rendimiento_lag_1</th>
+                                <th>rendimiento_lag_2</th>
+                                <th>rendimiento_lag_3</th>
+                                <th>produccion_lag_1</th>
+                                <th>area_cosechada_lag_1</th>
+                                <th style="color: #aaa;">+59 más</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CACAO</td>
+                                <td>2007</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CACAO</td>
+                                <td>2008</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CACAO</td>
+                                <td>2009</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CACAO</td>
+                                <td>2010</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CACAO</td>
+                                <td>2011</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>7.0</td>
+                                <td>7.0</td>
+                                <td>6.0</td>
+                                <td>0.8571428571428571</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="producto-section">
+                <div class="producto-title">
+                    <span>🌾 Café</span>
+                    <span class="producto-stats">12277 filas × 64 variables</span>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Identificadores</div>
+                    <div class="variables-list">
+                        <div class="variable-item">departamento</div>
+                        <div class="variable-item">municipio</div>
+                        <div class="variable-item">cultivo</div>
+                        <div class="variable-item">anio</div>
+                        <div class="variable-item">fuente_eva</div>
+                        <div class="variable-item">split</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Producción e Historia (Panel)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">area_sembrada_ha</div>
+                        <div class="variable-item">area_cosechada_ha</div>
+                        <div class="variable-item">produccion_t</div>
+                        <div class="variable-item">rendimiento_t_ha</div>
+                        <div class="variable-item">rendimiento_lag_1</div>
+                        <div class="variable-item">rendimiento_lag_2</div>
+                        <div class="variable-item">rendimiento_lag_3</div>
+                        <div class="variable-item">produccion_lag_1</div>
+                        <div class="variable-item">area_cosechada_lag_1</div>
+                        <div class="variable-item">area_sembrada_lag_1</div>
+                        <div class="variable-item">media_rendimiento_3y</div>
+                        <div class="variable-item">variabilidad_rendimiento_3y</div>
+                        <div class="variable-item">tendencia_rendimiento_3y</div>
+                        <div class="variable-item">es_outlier_rendimiento</div>
+                        <div class="variable-item">dato_copiado</div>
+                        <div class="variable-item">inconsistencia_rend</div>
+                        <div class="variable-item">score_confiabilidad</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Clima (IDEAM)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">precipitacion_acumulada_mm</div>
+                        <div class="variable-item">dias_lluvia</div>
+                        <div class="variable-item">intensidad_max_diaria_mm</div>
+                        <div class="variable-item">precipitacion_mediana_diaria</div>
+                        <div class="variable-item">precip_Q3_mm</div>
+                        <div class="variable-item">ratio_concentracion_lluvia</div>
+                        <div class="variable-item">cv_precipitacion_mensual</div>
+                        <div class="variable-item">max_dias_secos_consecutivos</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Suelos (AGROSAVIA)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">ph_media</div>
+                        <div class="variable-item">num_muestras_suelo</div>
+                        <div class="variable-item">ph_variabilidad</div>
+                        <div class="variable-item">materia_organica_pct_media</div>
+                        <div class="variable-item">materia_organica_pct_variabilidad</div>
+                        <div class="variable-item">fosforo_ppm_media</div>
+                        <div class="variable-item">fosforo_ppm_variabilidad</div>
+                        <div class="variable-item">calcio_meq_media</div>
+                        <div class="variable-item">calcio_meq_variabilidad</div>
+                        <div class="variable-item">magnesio_meq_media</div>
+                        <div class="variable-item">magnesio_meq_variabilidad</div>
+                        <div class="variable-item">potasio_meq_media</div>
+                        <div class="variable-item">potasio_meq_variabilidad</div>
+                        <div class="variable-item">salinidad_ds_m_media</div>
+                        <div class="variable-item">salinidad_ds_m_variabilidad</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Tendencias de Suelo</div>
+                    <div class="variables-list">
+                        <div class="variable-item">tendencia_ph</div>
+                        <div class="variable-item">tendencia_materia_organica_pct</div>
+                        <div class="variable-item">tendencia_fosforo_ppm</div>
+                        <div class="variable-item">tendencia_calcio_meq</div>
+                        <div class="variable-item">tendencia_magnesio_meq</div>
+                        <div class="variable-item">tendencia_potasio_meq</div>
+                        <div class="variable-item">tendencia_salinidad_ds_m</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Inversión (FINAGRO)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">credito_total</div>
+                        <div class="variable-item">colocacion_total</div>
+                        <div class="variable-item">num_operaciones_credito</div>
+                        <div class="variable-item">credito_promedio_operacion</div>
+                        <div class="variable-item">log_credito_total</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Precio Internacional (FRED)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">precio_internacional_usd</div>
+                        <div class="variable-item">precio_internacional_max</div>
+                        <div class="variable-item">precio_internacional_min</div>
+                        <div class="variable-item">volatilidad_precio</div>
+                        <div class="variable-item">cambio_precio_pct</div>
+                        <div class="variable-item">rango_precio_ratio</div>
+
+                    </div>
+                </div>
+
+                <div class="table-preview">
+                    <h3>📋 Primeras 5 filas de datos</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>departamento</th>
+                                <th>municipio</th>
+                                <th>cultivo</th>
+                                <th>anio</th>
+                                <th>fuente_eva</th>
+                                <th>split</th>
+                                <th>area_sembrada_ha</th>
+                                <th>area_cosechada_ha</th>
+                                <th>produccion_t</th>
+                                <th>rendimiento_t_ha</th>
+                                <th>rendimiento_lag_1</th>
+                                <th>rendimiento_lag_2</th>
+                                <th>rendimiento_lag_3</th>
+                                <th>produccion_lag_1</th>
+                                <th>area_cosechada_lag_1</th>
+                                <th style="color: #aaa;">+49 más</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CAFE</td>
+                                <td>2007</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>4067.0</td>
+                                <td>3819.0</td>
+                                <td>2329.0</td>
+                                <td>0.6098455092956271</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CAFE</td>
+                                <td>2008</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>4180.0</td>
+                                <td>3956.0</td>
+                                <td>2223.0</td>
+                                <td>0.5619312436804853</td>
+                                <td>0.6098455092956271</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>2329.0</td>
+                                <td>3819.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CAFE</td>
+                                <td>2009</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>4181.0</td>
+                                <td>3957.0</td>
+                                <td>2224.0</td>
+                                <td>0.5620419509729593</td>
+                                <td>0.5619312436804853</td>
+                                <td>0.6098455092956271</td>
+                                <td>-</td>
+                                <td>2223.0</td>
+                                <td>3956.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CAFE</td>
+                                <td>2010</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>4052.0</td>
+                                <td>3665.0</td>
+                                <td>2529.0</td>
+                                <td>0.6900409276944065</td>
+                                <td>0.5620419509729593</td>
+                                <td>0.5619312436804853</td>
+                                <td>0.6098455092956271</td>
+                                <td>2224.0</td>
+                                <td>3957.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>CAFE</td>
+                                <td>2011</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>3959.0</td>
+                                <td>3290.0</td>
+                                <td>1500.0</td>
+                                <td>0.4559270516717325</td>
+                                <td>0.6900409276944065</td>
+                                <td>0.5620419509729593</td>
+                                <td>0.5619312436804853</td>
+                                <td>2529.0</td>
+                                <td>3665.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="producto-section">
+                <div class="producto-title">
+                    <span>🌾 Plátano</span>
+                    <span class="producto-stats">16403 filas × 59 variables</span>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Identificadores</div>
+                    <div class="variables-list">
+                        <div class="variable-item">departamento</div>
+                        <div class="variable-item">municipio</div>
+                        <div class="variable-item">cultivo</div>
+                        <div class="variable-item">anio</div>
+                        <div class="variable-item">fuente_eva</div>
+                        <div class="variable-item">split</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Producción e Historia (Panel)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">area_sembrada_ha</div>
+                        <div class="variable-item">area_cosechada_ha</div>
+                        <div class="variable-item">produccion_t</div>
+                        <div class="variable-item">rendimiento_t_ha</div>
+                        <div class="variable-item">rendimiento_lag_1</div>
+                        <div class="variable-item">rendimiento_lag_2</div>
+                        <div class="variable-item">rendimiento_lag_3</div>
+                        <div class="variable-item">produccion_lag_1</div>
+                        <div class="variable-item">area_cosechada_lag_1</div>
+                        <div class="variable-item">area_sembrada_lag_1</div>
+                        <div class="variable-item">media_rendimiento_3y</div>
+                        <div class="variable-item">variabilidad_rendimiento_3y</div>
+                        <div class="variable-item">tendencia_rendimiento_3y</div>
+                        <div class="variable-item">es_outlier_rendimiento</div>
+                        <div class="variable-item">dato_copiado</div>
+                        <div class="variable-item">inconsistencia_rend</div>
+                        <div class="variable-item">score_confiabilidad</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Clima (IDEAM)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">precipitacion_acumulada_mm</div>
+                        <div class="variable-item">dias_lluvia</div>
+                        <div class="variable-item">intensidad_max_diaria_mm</div>
+                        <div class="variable-item">precipitacion_mediana_diaria</div>
+                        <div class="variable-item">precip_Q3_mm</div>
+                        <div class="variable-item">ratio_concentracion_lluvia</div>
+                        <div class="variable-item">cv_precipitacion_mensual</div>
+                        <div class="variable-item">max_dias_secos_consecutivos</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Suelos (AGROSAVIA)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">ph_media</div>
+                        <div class="variable-item">num_muestras_suelo</div>
+                        <div class="variable-item">ph_variabilidad</div>
+                        <div class="variable-item">materia_organica_pct_media</div>
+                        <div class="variable-item">materia_organica_pct_variabilidad</div>
+                        <div class="variable-item">fosforo_ppm_media</div>
+                        <div class="variable-item">fosforo_ppm_variabilidad</div>
+                        <div class="variable-item">calcio_meq_media</div>
+                        <div class="variable-item">calcio_meq_variabilidad</div>
+                        <div class="variable-item">magnesio_meq_media</div>
+                        <div class="variable-item">magnesio_meq_variabilidad</div>
+                        <div class="variable-item">potasio_meq_media</div>
+                        <div class="variable-item">potasio_meq_variabilidad</div>
+                        <div class="variable-item">salinidad_ds_m_media</div>
+                        <div class="variable-item">salinidad_ds_m_variabilidad</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Tendencias de Suelo</div>
+                    <div class="variables-list">
+                        <div class="variable-item">tendencia_ph</div>
+                        <div class="variable-item">tendencia_materia_organica_pct</div>
+                        <div class="variable-item">tendencia_fosforo_ppm</div>
+                        <div class="variable-item">tendencia_calcio_meq</div>
+                        <div class="variable-item">tendencia_magnesio_meq</div>
+                        <div class="variable-item">tendencia_potasio_meq</div>
+                        <div class="variable-item">tendencia_salinidad_ds_m</div>
+
+                    </div>
+                </div>
+
+                <div class="variable-group">
+                    <div class="group-title">Precio Internacional (FRED)</div>
+                    <div class="variables-list">
+                        <div class="variable-item">precio_internacional_usd</div>
+                        <div class="variable-item">precio_internacional_max</div>
+                        <div class="variable-item">precio_internacional_min</div>
+                        <div class="variable-item">volatilidad_precio</div>
+                        <div class="variable-item">cambio_precio_pct</div>
+                        <div class="variable-item">rango_precio_ratio</div>
+
+                    </div>
+                </div>
+
+                <div class="table-preview">
+                    <h3>📋 Primeras 5 filas de datos</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>departamento</th>
+                                <th>municipio</th>
+                                <th>cultivo</th>
+                                <th>anio</th>
+                                <th>fuente_eva</th>
+                                <th>split</th>
+                                <th>area_sembrada_ha</th>
+                                <th>area_cosechada_ha</th>
+                                <th>produccion_t</th>
+                                <th>rendimiento_t_ha</th>
+                                <th>rendimiento_lag_1</th>
+                                <th>rendimiento_lag_2</th>
+                                <th>rendimiento_lag_3</th>
+                                <th>produccion_lag_1</th>
+                                <th>area_cosechada_lag_1</th>
+                                <th style="color: #aaa;">+44 más</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>PLATANO</td>
+                                <td>2007</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>2042.0</td>
+                                <td>2029.0</td>
+                                <td>8116.0</td>
+                                <td>4.0</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>PLATANO</td>
+                                <td>2008</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>2025.0</td>
+                                <td>2021.0</td>
+                                <td>12732.0</td>
+                                <td>6.299851558634339</td>
+                                <td>4.0</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>8116.0</td>
+                                <td>2029.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>PLATANO</td>
+                                <td>2009</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>2021.0</td>
+                                <td>2021.0</td>
+                                <td>12732.0</td>
+                                <td>6.299851558634339</td>
+                                <td>6.299851558634339</td>
+                                <td>4.0</td>
+                                <td>-</td>
+                                <td>12732.0</td>
+                                <td>2021.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>PLATANO</td>
+                                <td>2010</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>2059.0</td>
+                                <td>2057.0</td>
+                                <td>12959.0</td>
+                                <td>6.299951385512883</td>
+                                <td>6.299851558634339</td>
+                                <td>6.299851558634339</td>
+                                <td>4.0</td>
+                                <td>12732.0</td>
+                                <td>2021.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+                            <tr>
+                                <td>ANTIOQUIA</td>
+                                <td>ABEJORRAL</td>
+                                <td>PLATANO</td>
+                                <td>2011</td>
+                                <td>historica</td>
+                                <td>historial</td>
+                                <td>2019.0</td>
+                                <td>2019.0</td>
+                                <td>9086.0</td>
+                                <td>4.500247647350173</td>
+                                <td>6.299951385512883</td>
+                                <td>6.299851558634339</td>
+                                <td>6.299851558634339</td>
+                                <td>12959.0</td>
+                                <td>2057.0</td>
+                                <td style="color: #aaa;">...</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="footer">
+            <p>Documento generado automáticamente desde tablas model_mart_*.csv</p>
+            <p>Proyecto: Inferencia de Datos - Modelado de Rendimiento Agrícola</p>
+        </div>
+    </div>
+</body>
+</html>
