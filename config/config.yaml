@@ -1,0 +1,154 @@
+ablation:
+  A:
+  - historial
+  B:
+  - historial
+  - clima
+  C:
+  - historial
+  - clima
+  - suelo
+  D:
+  - historial
+  - clima
+  - suelo
+  - territorio
+  E:
+  - historial
+  - clima
+  - suelo
+  - territorio
+  - economia
+features:
+  clima:
+  - precipitacion_acumulada_mm
+  - dias_lluvia
+  - temperatura_media_c
+  - temperatura_max_c
+  - temperatura_min_c
+  - humedad_relativa
+  economia:
+  - precio_cacao_precosecha
+  - tendencia_precio_cacao
+  - precio_insumos
+  historial:
+  - rendimiento_lag_1
+  - rendimiento_lag_2
+  - rendimiento_lag_3
+  - produccion_lag_1
+  - area_cosechada_lag_1
+  - area_sembrada_lag_1
+  - media_rendimiento_3y
+  - tendencia_rendimiento_3y
+  - variabilidad_rendimiento_3y
+  suelo:
+  - ph_media
+  - materia_organica_media
+  - fosforo_media
+  - potasio_media
+  - calcio_media
+  - magnesio_media
+  - salinidad_media
+  - num_muestras_suelo
+  territorio:
+  - aptitud_cacao
+  - departamento
+fuentes:
+  eva_historica:
+    "a\xF1os":
+    - 2007
+    - 2018
+    id_dataset: 2pnw-mmge
+    rol: historial
+    url: https://www.datos.gov.co/resource/2pnw-mmge.json
+  eva_reciente:
+    "a\xF1os":
+    - 2019
+    - 2024
+    id_dataset: uejq-wxrr
+    rol: target
+    url: https://www.datos.gov.co/resource/uejq-wxrr.json
+  fred_precios:
+    arroz: PRICENPQUSDM
+    cacao: PCOCOUSDM
+    cafe: PCOFFOTMUSDM
+    platano: PBANSOPUSDM
+    rol: feature_macroeconomica
+  ideam_precipitacion:
+    id_dataset: s54a-sgyg
+    rol: feature_climatica
+    url: https://www.datos.gov.co/resource/s54a-sgyg.json
+  sipsa_precios:
+    id_dataset: gkqq-k3k5
+    rol: feature_economica
+    url: https://www.datos.gov.co/resource/gkqq-k3k5.json
+  suelos_agrosavia:
+    id_dataset: ch4u-f3i5
+    rol: features_suelo
+    url: https://www.datos.gov.co/resource/ch4u-f3i5.json
+  upra_aptitud:
+    arroz:
+      id_dataset: ''
+      url: ''
+    cacao:
+      id_dataset: jdjx-qer4
+      url: https://www.datos.gov.co/resource/jdjx-qer4.json
+    rol: feature_territorial
+leakage:
+  reglas_duras:
+  - "No usar rendimiento, produccion ni area_cosechada del a\xF1o t como feature"
+  - Solo clima disponible <= fecha_corte
+  - Solo precios anteriores a fecha_corte
+  - Solo muestras de suelo anteriores a fecha_corte
+  - Lags y rolling solo con t-1 y anteriores
+  - Rolling-origin temporal para splits
+  - Scaler/imputer/encoder ajustado solo en train
+  - ENA fuera de entrenamiento si se usa como validacion externa
+metricas:
+  negocio: ingreso_esperado_cop
+  ranking:
+  - Precision_K10
+  - Lift_K10
+  regresion:
+  - MAE
+  - RMSE
+  - MAPE
+  - R2
+model_mart:
+  "a\xF1o_col": anio
+  cultivo_col: cultivo
+  departamento_col: departamento
+  id_cols:
+  - municipio
+  - cultivo
+  - anio
+  municipio_col: municipio
+  target_col: rendimiento_t_ha
+modelos:
+  baselines:
+  - descripcion: "Rendimiento del a\xF1o anterior"
+    nombre: B1_lag1
+  - descripcion: "Promedio de los \xFAltimos 3 a\xF1os"
+    nombre: B2_media3y
+  ml:
+  - libreria: sklearn
+    nombre: ElasticNet
+  - libreria: sklearn
+    nombre: RandomForest
+  - libreria: catboost
+    nombre: CatBoost
+    principal: true
+project:
+  "a\xF1os_backtest":
+  - 2019
+  - 2020
+  - 2021
+  - 2022
+  - 2023
+  - 2024
+  cultivo_mvp: arroz
+  descripcion: Inferencia predictiva de rendimiento agricola en Colombia. Soporta
+    cultivos permanentes y transitorios.
+  fecha_corte_train_max: 2018
+  nombre: AgroRank-MultiCrop
+  trm_usd_cop: 4000

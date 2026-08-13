@@ -1,55 +1,9 @@
-# ─────────────────────────────────────────────────────────────────────
-# Solar-Rank .gitignore
-# ─────────────────────────────────────────────────────────────────────
-
-# Entornos virtuales
-venv/
-.venv/
-env/
-ENV/
-
-# Byte-compiled / Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-*.egg-info/
-dist/
-build/
-
-# Datos (demasiado grandes para Git)
 data/raw/
-data/interim/
 data/processed/
-data/external/
-*.db
-*.sqlite3
-*.sqbpro
 *.parquet
-
-# Notebooks checkpoints
-.ipynb_checkpoints/
-
-# Modelos entrenados
-models/
-*.pkl
-*.joblib
-*.pt
-*.pth
-*.onnx
-*.cbm
-
-# Reportes generados (figuras se versionan, datos no)
-reports/tables/*.json
-reports/tables/*.csv
-
-# Configuraciones y secretos
+*.pyc
+__pycache__/
 .env
-.vscode/
-.idea/
-.DS_Store
+catboost_info/
+config/config.yaml.bak
 
-# OS
-Thumbs.db
-*.swp
-*.swo
-*~

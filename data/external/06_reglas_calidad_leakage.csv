@@ -1,0 +1,11 @@
+﻿id,tipo,regla,nivel
+L01,Target,No usar rendimiento del año t como feature para predecir t.,Duro
+L02,Clima,"Si el objetivo es predecir antes de cosecha, usar clima histórico o pronóstico disponible antes de la fecha de corte; no clima observado durante/Después de cosecha si la decisión es ex-ante.",Duro
+L03,Precio,Usar precio conocido antes del momento de decisión; no usar precio post-cosecha para explicar rendimiento.,Duro
+L04,Suelo,Solo muestras tomadas antes de la fecha de predicción y agregadas sin incluir muestras futuras.,Duro
+L05,EVA,No usar area_cosechada/produccion/rendimiento del mismo periodo objetivo como features.,Duro
+L06,Features históricas,Rolling/lag solo con t-1 y anteriores.,Duro
+L07,Aptitud,Usar solo zonificación independiente del resultado objetivo.,Duro
+L08,Split,Rolling-origin temporal; nunca random row split para una misma serie municipio-cultivo.,Duro
+L09,Normalización,Ajustar scaler/imputer/encoder solo en train.,Duro
+L10,ENA,Mantener ENA fuera del entrenamiento si se usa como validación externa.,Duro

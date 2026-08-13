@@ -1,0 +1,31 @@
+﻿variable,fuente,tipo,justificacion,rol
+rendimiento_lag_1_t_ha,EVA,Historial,Rendimiento del mismo municipio/cultivo en año anterior.,Core
+rendimiento_lag_2_t_ha,EVA,Historial,Persistencia interanual.,Core
+produccion_lag_1_t,EVA,Historial,Escala productiva previa.,Core
+area_cosechada_lag_1_ha,EVA,Historial,Escala de cosecha previa.,Core
+area_sembrada_lag_1_ha,EVA,Historial,Superficie dedicada al cultivo.,Core
+tendencia_rendimiento_3y,EVA derivado,Historial,Cambio reciente del rendimiento.,Core
+media_rendimiento_3y,EVA derivado,Historial,Nivel típico reciente.,Core
+variabilidad_rendimiento_3y,EVA derivado,Historial,Estabilidad productiva.,Secondary
+precipitacion_acumulada_ciclo_mm,IDEAM,Clima,Agua disponible durante ciclo; debe construirse desde datos previos a la cosecha.,Core
+dias_lluvia_ciclo,IDEAM,Clima,Distribución temporal de precipitación.,Secondary
+temperatura_media_ciclo_c,IDEAM,Clima,Condición térmica del periodo de desarrollo.,Core
+temperatura_max_ciclo_c,IDEAM,Clima,Extremos térmicos.,Secondary
+temperatura_min_ciclo_c,IDEAM,Clima,Extremos térmicos.,Secondary
+radiacion_media_ciclo,UPME/IDEAM,Clima,Energía solar disponible; puede afectar fotosíntesis y estacionalidad.,Secondary
+humedad_relativa_media,IDEAM,Clima,Condición ambiental; probar utilidad.,Experimental
+aptitud_cultivo,UPRA,Territorio,Compatibilidad físico-socioambiental del cultivo.,Core
+altitud_msnm,IGAC/DEM,Territorio,Relación con temperatura y adaptación del cultivo.,Core
+pendiente,IGAC/DEM,Territorio,"Afecta manejo, erosión y acceso.",Secondary
+propiedades_suelo,AGROSAVIA,Suelo,"pH, materia orgánica, P, K, Ca, Mg, salinidad y otros disponibles.",Core candidate
+numero_muestras_suelo,AGROSAVIA derivado,Suelo,Confianza de agregación del suelo por municipio/cultivo.,Secondary
+precio_cacao_pre_siembra,AgroNet,Economía,Señal económica del cultivo disponible antes de decisión/cosecha.,Core para cacao
+precio_cacao_tendencia,AgroNet derivado,Economía,Tendencia reciente de precio.,Secondary
+precio_mayorista_cultivo,SIPSA-P,Economía,Precio de mercado del producto.,Core cuando hay correspondencia
+precio_insumos,SIPSA-I,Costos,Presión de costos de producción.,Secondary
+tipo_cultivo,EVA,Identidad,Permite model multi-cultivo o filtrar un MVP por cultivo.,Core/Filter
+municipio,EVA,Geografía,Heterogeneidad territorial.,Core
+departamento,EVA,Geografía,Contexto regional.,Core
+semestre_periodo,EVA,Calendario,"En transitorios, distingue ciclos.",Core transitorios
+rendimiento_t_ha,EVA,TARGET,Objetivo de regresión.,TARGET
+rendimiento_alto,Derivado target,TARGET,1 si rendimiento supera umbral definido sin mirar futuro.,TARGET

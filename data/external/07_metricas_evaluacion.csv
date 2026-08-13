@@ -1,0 +1,10 @@
+﻿tipo,metrica,unidad,uso
+Regresión,MAE,ton/ha,Error absoluto medio de rendimiento
+Regresión,RMSE,ton/ha,Penaliza errores grandes
+Regresión,MAPE,%,Error relativo; usar con cuidado cuando el target esté cerca de cero
+Regresión,R2,0-1 aprox.,"Varianza explicada, complementaria"
+Ranking,Precision@K,%,Proporción de municipios-cultivo del top K que realmente superan el umbral de rendimiento
+Ranking,Lift@K,veces,Éxito en top K vs selección aleatoria/baseline
+Probabilidad,Brier,0-1,Calidad de probabilidad si se usa clase rendimiento alto
+Probabilidad,Calibration error,%,Diferencia entre probabilidad predicha y frecuencia observada
+Negocio,Ingreso agrícola esperado,COP,"rendimiento × área × precio, como escenario económico; no confundir con beneficio neto"

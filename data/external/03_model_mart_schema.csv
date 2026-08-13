@@ -1,0 +1,13 @@
+﻿campo,representacion,uso,feature
+id_caso,municipio+cultivo+fecha_corte,identificador; no predictor,Sí
+fecha_corte,fecha,fecha de decisión/siembra,Sí
+cultivo,categorical,target/crop identity,Sí
+municipio,categorical,geografía,Sí
+historial_rendimiento,numeric/sequence,"t-1,t-2,...",Sí
+clima_previsto_o_historial,numeric/sequence,solo información disponible antes de cosecha,Sí
+suelo,numeric,agregado de muestras históricas disponibles,Sí
+aptitud,categorical,aptitud UPRA,Sí
+precio_pre_ciclo,numeric,precio conocido antes del resultado,Sí
+insumos_pre_ciclo,numeric,costos conocidos antes del resultado,Sí
+rendimiento_t_ha,numeric,observación real,NO: TARGET
+periodo_cosecha,date/category,usado para alinear el contexto,"Sí, sin mirar futuro"

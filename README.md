@@ -1,119 +1,54 @@
-# Solar-Rank
+# Proyecto Predicción de Rendimiento de Cacao (Colombia)
 
-**Sistema de inferencia para priorizar hogares colombianos con mayor viabilidad económica para energía solar.**
+Pipeline de Ingeniería de Datos y Machine Learning para inferir el rendimiento ex-ante (toneladas por hectárea) del cultivo de Cacao a nivel municipal en Colombia.
 
-> **Naturaleza**: Inferencia predictiva — no causalidad.
+## Arquitectura de Datos
+Este proyecto integra múltiples fuentes de datos abiertos del gobierno colombiano:
+1. **EVA (UPRA/Agronet)**: Evaluaciones Agropecuarias Municipales (Área, Producción, Rendimiento).
+2. **IDEAM**: Precipitación climática.
+3. **AGROSAVIA**: Propiedades químicas del suelo (pH, Fósforo, Calcio, Salinidad).
+4. **UPRA**: Mapas de aptitud territorial para el cultivo de cacao.
+5. **FINAGRO**: Colocaciones y desembolsos de crédito agropecuario.
+6. **FRED (Reserva Federal EE.UU.)**: Precios internacionales de futuros de cacao para simular incentivos de mercado.
 
----
+## Estructura del Repositorio
+- `data/`: Almacenamiento local (ignorado en git excepto diccionarios).
+  - `external/`: CSVs de configuración y catálogos fijos.
+  - `raw/`: Descargas brutas de las APIs.
+  - `processed/`: Tablas limpias, panel temporal y Model Mart final.
+- `src/`: Código fuente principal.
+  - `data/`: Scripts de extracción web (API SODA).
+  - `features/`: Ingeniería de características (Lags) y cruce maestro.
+  - `models/`: Entrenamiento de heurísticas (Baselines) y ML (CatBoost).
+- `reports/`:
+  - `tables/`: CSVs con métricas (MAE, RMSE, MAPE).
+  - `figures/`: Gráficos de barras comparativos de desempeño.
 
-## Pregunta principal
+## Prevención de Data Leakage
+El pipeline respeta estrictamente la temporalidad. Cualquier característica usada para predecir el año $t$ es calculada exclusivamente con información disponible hasta el año $t-1$.
 
-> ¿Puede un modelo de aprendizaje automático mejorar la priorización de hogares colombianos para proyectos solares, estimando la probabilidad de recuperar la inversión antes de distintos plazos, frente a criterios de selección simples?
-
-## Formulación
-
-```
-P(T ≤ X | E, C, G, V, S)
-```
-
-| Símbolo | Significado |
-|---|---|
-| T | Tiempo de recuperación de la inversión |
-| X | Horizonte temporal: **3, 5, 7, 10 años** |
-| E | Variables energéticas |
-| C | Variables económicas |
-| G | Variables geográficas y climáticas |
-| V | Variables de vivienda |
-| S | Características del sistema solar |
-
-## Objetivo central
-
-**No** es simplemente calcular el payback. Es determinar si el ML mejora la **priorización** de hogares candidatos frente a métodos simples.
-
-Escenario: 100.000 hogares candidatos, recursos para intervenir solo 10.000. ¿Qué método selecciona más hogares exitosos?
-
-## Métodos comparados
-
-| # | Método | Tipo |
-|---|---|---|
-| 1 | Ranking por radiación | Regla simple |
-| 2 | Ranking por consumo | Regla simple |
-| 3 | Ranking por fórmula económica | Fórmula |
-| 4 | Regresión Logística | ML baseline |
-| 5 | CatBoost | ML tabular |
-| 6 | Transformer compacto | ML temporal |
-
-## Fuentes de datos
-
-Todas colombianas, públicas y documentadas:
-
-| # | Fuente | Entidad | Datos |
-|---|---|---|---|
-| 1 | SUI Formato 1743 | Superservicios | Consumo, facturación |
-| 2 | Tarifas Publicadas | Superservicios | Tarifas, subsidios, estratos |
-| 3 | Radiación Solar | UPME | Recurso solar mensual |
-| 4 | Atlas Climatológico | IDEAM | Temperatura, precipitación, humedad |
-| 5 | LADM-COL | IGAC | Área construida, plantas, año |
-| 6 | Sisbén | DNP | Zona, tipo vivienda, cuartos |
-| 7 | Indicadores OR | XM/SIMEM | SAIDI, SAIFI |
-| 8 | Formato 438 | Superservicios | Vínculo usuario-red (solo joins) |
-
-## Métricas de evaluación
-
-**Priorización**: Precision@K, Recall@K, Lift@K (K = 1%, 5%, 10%, 20%)
-
-**Clasificación**: ROC-AUC, PR-AUC, F1, Brier Score, calibración
-
-**Regresión**: MAE, RMSE, R²
-
-## Salida por hogar
-
-```
-Hogar A
-Payback esperado: 4.8 años
-P(payback ≤ 3)  = 21%
-P(payback ≤ 5)  = 68%
-P(payback ≤ 7)  = 91%
-P(payback ≤ 10) = 98%
-Ranking: #137 de 100.000
-```
-
-## Estructura del proyecto
-
-```
-├── config/           # Configuración YAML
-├── data/             # Datos (excluidos de Git)
-│   ├── raw/          # Datos crudos descargados
-│   ├── interim/      # Tablas intermedias (01-11)
-│   ├── processed/    # model_mart listo
-│   └── external/     # Datos externos estáticos
-├── docs/             # Documentación y artefactos de diseño
-├── notebooks/        # Exploración, engineering, modelado
-├── src/              # Código fuente del pipeline
-│   ├── data/         # Extractores y loaders
-│   ├── features/     # Feature engineering
-│   ├── models/       # Definición de modelos
-│   ├── evaluation/   # Métricas y comparación
-│   ├── visualization/
-│   └── utils/
-├── reports/          # Resultados, figuras, tablas
-└── tests/
-```
-
-## Setup
+## Ejecución del Pipeline
+El repositorio está diseñado de manera secuencial. Puedes ejecutar la tubería completa de extracción, procesamiento, modelado y graficado ejecutando:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
+./run_pipeline.sh
+```
+
+## Demostración Científica
+El repositorio incluye un script especial de control (`src/models/04_demo_transitorios.py`) que comprueba la hipótesis científica del proyecto: al evaluar cultivos de ciclo corto (como el Arroz), los modelos predictivos sí logran modelar la varianza cuando se inyecta clima, demostrando que la dependencia a la inercia (Baseline) es exclusiva de los cultivos permanentes.
+
+## Visualización (Dashboard)
+El proyecto incluye un dashboard analítico en **Streamlit**. Para ejecutarlo localmente:
+
+```bash
+streamlit run app.py
+```
+
+## Requisitos
+Se recomienda el uso de un entorno virtual (`venv`):
+```bash
 pip install -r requirements.txt
 ```
 
-## Criterio de éxito
-
-El proyecto es exitoso si el ML supera consistentemente los baselines en Precision@K y las probabilidades son razonablemente calibradas.
-
-Si ML ≈ reglas simples, eso también es un **resultado válido**.
-
-## Licencia
-
-Proyecto académico — Ingeniería de Datos.
+---
+*Proyecto de Ingeniería de Datos para Machine Learning Agrícola - 2024*

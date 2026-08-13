@@ -1,0 +1,7 @@
+﻿modelo,descripcion,tipo,decision
+Baseline 1,Promedio histórico del municipio-cultivo,Regla,Obligatorio
+Baseline 2,Rendimiento del año anterior,Regla,Obligatorio
+Model 1,Regresión lineal/Elastic Net,ML estadístico,Obligatorio
+Model 2,Random Forest / Gradient Boosting,ML tabular,Recomendado
+Model 3,CatBoost,ML tabular,Principal candidato
+Model 4,Transformer temporal compacto,Deep Learning,Solo si los baselines justifican secuencia/volumen

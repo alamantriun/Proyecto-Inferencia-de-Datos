@@ -1,0 +1,5 @@
+﻿experimento,cultivo,periodos,split,justificacion
+MVP-cacao-permanente,Cacao,2019→2020; 2020→2021; 2021→2022; 2022→2023; 2023→2024,rolling-origin temporal,Permite varias evaluaciones fuera de muestra; cultivo permanente evita el problema de semestres de transitorios.
+Multi-cultivo,Todos con suficiente cobertura,mismo esquema por cultivo,grouped + temporal,Solo después del MVP; controlar diferencias de unidades y ciclos.
+Transitorios,"Papa/maíz/arroz, etc.",priorizar 2022→2023→2024,temporal por semestre,EVA aclara que desde 2022 producción/rendimiento corresponden a cosechas efectivas; no mezclar con semántica pre-2022 sin tratamiento específico.
+Validación externa ENA,Cultivo seleccionado,agregados departamentales 2023 cuando exista,comparar agregados EVA vs ENA,ENA es una operación distinta y sirve para evaluar consistencia del target.
