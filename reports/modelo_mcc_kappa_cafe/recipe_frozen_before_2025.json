@@ -1,0 +1,17 @@
+{
+  "selected_without_2025": true,
+  "development_years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "winner": "logistic_smotenc",
+  "recipe": {
+    "name": "logistic_smotenc",
+    "decision_threshold": 0.5499999999999999
+  },
+  "selection_rule": "maximizar el peor min(MCC, Kappa) anual; luego promedio, precisión ponderada y simplicidad"
+}

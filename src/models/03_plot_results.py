@@ -114,7 +114,7 @@ def plot_performance_comparison():
     try:
         # Extraemos la importancia del modelo F simulando entrenamiento en todo
         from catboost import CatBoostRegressor
-        mart_path = f"data/processed/model_mart_{cultivo_file}.csv"
+        mart_path = f"reports/tablas_entrenamiento/dataset_cafe_ml_ready.csv" if cultivo_file == "cafe" else f"data/processed/model_mart_{cultivo_file}.csv"
         mart = pd.read_csv(mart_path).dropna(subset=["rendimiento_t_ha"])
         
         # Features F completas

@@ -5,5 +5,7 @@ data/processed/
 __pycache__/
 .env
 catboost_info/
-config/config.yaml.bak
-
+.venv/
+venv_cafe/
+*.csv
+!requirements.txt

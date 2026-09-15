@@ -135,15 +135,15 @@ def train_and_evaluate(df: pd.DataFrame, target_year: int, features: list,
     # Peso de muestra basado en confiabilidad
     sample_weight = None
     if "score_confiabilidad" in train.columns:
-        sample_weight = train["score_confiabilidad"].fillna(0.5).values
+        sample_weight = train["score_confiabilidad"].fillna(0.5).clip(0, 1).values
     
-    # CatBoost con regularización más fuerte para evitar overfitting
+    # CatBoost con entrenamiento más profundo (análisis exhaustivo)
     model = CatBoostRegressor(
-        iterations=500,
-        learning_rate=0.03,
-        depth=4,              # Menos profundo = menos overfitting
-        l2_leaf_reg=5,        # Regularización L2
-        min_data_in_leaf=20,  # Más datos por hoja = más generalización
+        iterations=2000,      # Aumentado de 500 a 2000 para mayor exploración
+        learning_rate=0.01,   # Reducido de 0.03 a 0.01 para aprendizaje más sutil
+        depth=6,              # Aumentado de 4 a 6 para capturar relaciones no lineales complejas
+        l2_leaf_reg=5,        # Regularización L2 mantenida para controlar overfitting
+        min_data_in_leaf=15,  # Ajustado para permitir hojas ligeramente más especializadas
         loss_function='RMSE',
         verbose=0,
         random_seed=42
@@ -197,7 +197,7 @@ def main():
     cultivo_file = cultivo.lower().replace(' ', '_')
     años_test = config["project"].get("años_backtest", [2019, 2020, 2021, 2022, 2023, 2024])
     
-    mart_path = Path(f"data/processed/model_mart_{cultivo_file}.csv")
+    mart_path = Path("reports/tablas_entrenamiento/dataset_cafe_ml_ready.csv") if cultivo_file == "cafe" else Path(f"data/processed/model_mart_{cultivo_file}.csv")
 
     print(f"=== Ablation Study: CatBoost Regressor ({cultivo.upper()}) ===")
     df = pd.read_csv(mart_path)

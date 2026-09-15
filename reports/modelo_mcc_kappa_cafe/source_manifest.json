@@ -1,0 +1,73 @@
+{
+  "source_manifest": {
+    "retrieved_at_utc": "2026-09-15T17:20:56.207027+00:00",
+    "sources": {
+      "eva_historical": {
+        "dataset_id": "2pnw-mmge",
+        "url": "https://www.datos.gov.co/resource/2pnw-mmge.json",
+        "rows_raw": 7263
+      },
+      "eva_recent": {
+        "dataset_id": "uejq-wxrr",
+        "url": "https://www.datos.gov.co/resource/uejq-wxrr.json",
+        "rows_raw": 4459
+      },
+      "divipola": {
+        "dataset_id": "Serv_DIVIPOLA_MGN_2025/317",
+        "url": "https://geoportal.dane.gov.co/mparcgis/rest/services/Divipola/Serv_DIVIPOLA_MGN_2025/FeatureServer/317/query",
+        "rows_raw": 1122
+      }
+    },
+    "outputs": {
+      "eva": {
+        "rows": 11631,
+        "sha256": "34de8d6eb082eed40324ea9188738a5ee9c9ed1fbfe7d03c66094e6a40502161"
+      },
+      "divipola": {
+        "rows": 1122,
+        "sha256": "f941fb0a86ad4dc82622be7e6385b0ceeb7215be00c3589f68f238193da4921f"
+      }
+    }
+  },
+  "nasa_power_manifest": {
+    "retrieved_at_utc": "2026-09-15T17:25:57.315356+00:00",
+    "source": "https://power.larc.nasa.gov/api/temporal/monthly/regional",
+    "source_model": "NASA POWER MERRA-2",
+    "start_year": 2006,
+    "end_year": 2024,
+    "parameters": [
+      "PRECTOTCORR",
+      "T2M",
+      "T2M_MIN",
+      "T2M_MAX"
+    ],
+    "tiles": [
+      [
+        -5.0,
+        5.0,
+        -80.0,
+        -70.0
+      ],
+      [
+        -5.0,
+        5.0,
+        -70.0,
+        -66.0
+      ],
+      [
+        5.0,
+        14.0,
+        -80.0,
+        -70.0
+      ],
+      [
+        5.0,
+        14.0,
+        -70.0,
+        -66.0
+      ]
+    ],
+    "rows": 21318,
+    "sha256": "83c6170b049efcb39ce7080dfc19c269c5a33a370b031303c0a3b43d5458a61a"
+  }
+}

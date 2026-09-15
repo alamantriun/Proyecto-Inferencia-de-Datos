@@ -39,7 +39,7 @@ def plot_regression():
     cultivo = config["project"].get("cultivo_mvp", "cacao")
     cultivo_file = cultivo.lower().replace(' ', '_')
     
-    mart_path = Path(f"data/processed/model_mart_{cultivo_file}.csv")
+    mart_path = Path("reports/tablas_entrenamiento/dataset_cafe_ml_ready.csv") if cultivo_file == "cafe" else Path(f"data/processed/model_mart_{cultivo_file}.csv")
     if not mart_path.exists():
         print(f"No se encontró {mart_path}")
         return
@@ -65,8 +65,16 @@ def plot_regression():
     X_test = test[features]
     y_test = test["rendimiento_t_ha"]
     
-    # Entrenar
-    model = CatBoostRegressor(iterations=500, learning_rate=0.03, depth=4, l2_leaf_reg=5, verbose=0, random_seed=42)
+    # Entrenar (Análisis Profundo)
+    model = CatBoostRegressor(
+        iterations=2000, 
+        learning_rate=0.01, 
+        depth=6, 
+        l2_leaf_reg=5, 
+        min_data_in_leaf=15,
+        verbose=0, 
+        random_seed=42
+    )
     model.fit(X_train, y_train)
     
     # Predecir Híbrido (70% ML, 30% Baseline)
@@ -74,45 +82,41 @@ def plot_regression():
     pred_base = test["rendimiento_lag_1"].values
     pred_blend = 0.7 * pred_ml + 0.3 * pred_base
     
-    # ── NUEVA LÓGICA DE GRÁFICA (Casos Reales vs Línea Predicha) ──
-    # Para que la línea tenga sentido visual, ordenamos los datos
-    # de menor a mayor rendimiento real.
-    resultados = pd.DataFrame({
-        "Real": y_test.values,
-        "Predicho": pred_blend
-    }).sort_values("Real").reset_index(drop=True)
-    
-    plt.figure(figsize=(12, 6))
+    # ── LÓGICA DE GRÁFICA CORREGIDA (Real vs Predicho) ──
+    # Un scatter plot tradicional de regresión (X = Real, Y = Predicho)
+    plt.figure(figsize=(10, 8))
     plt.grid(True, linestyle='--', alpha=0.5)
     
-    # Eje X será un índice simple (municipio 1, municipio 2...)
-    x_index = np.arange(len(resultados))
+    # Scatter de predicciones vs reales
+    plt.scatter(y_test, pred_blend, color='#3498db', alpha=0.6, s=40, label='Predicciones vs Casos Reales')
     
-    # Puntos = Casos Reales del dataset
-    plt.scatter(x_index, resultados["Real"], color='#3498db', alpha=0.6, s=30, label='Casos Reales (Dataset)')
+    # Línea de perfección matemática (y = x)
+    min_val = min(y_test.min(), pred_blend.min())
+    max_val = max(y_test.max(), pred_blend.max())
+    # Agregar un pequeño margen
+    margin = (max_val - min_val) * 0.05
+    min_val, max_val = min_val - margin, max_val + margin
     
-    # Línea Roja = Datos que predice el modelo
-    # Aplicamos un ligero suavizado a la línea para que sea visualmente atractiva (media móvil de 5)
-    linea_predicha = resultados["Predicho"].rolling(window=5, min_periods=1, center=True).mean()
-    plt.plot(x_index, linea_predicha, color='red', linewidth=2.5, label='Curva de Predicción (Modelo)')
+    plt.plot([min_val, max_val], [min_val, max_val], color='red', linestyle='--', linewidth=2.5, label='Línea Ideal (Predicción Perfecta)')
     
-    # Sombra del margen de error (10% sobre la predicción)
-    plt.fill_between(x_index, 
-                     linea_predicha * 0.9, 
-                     linea_predicha * 1.1, 
-                     color='red', alpha=0.15, label='Margen de Error (±10%)')
+    # Ajustar límites
+    plt.xlim(min_val, max_val)
+    plt.ylim(min_val, max_val)
 
-    plt.title(f"Efectividad del Modelo Híbrido: {cultivo.upper()} (Año 2024)\nCasos Reales vs Línea de Predicción", fontsize=14, pad=15)
-    plt.xlabel("Municipios (Ordenados de menor a mayor rendimiento real)", fontsize=12)
-    plt.ylabel("Rendimiento (Toneladas/Hectárea)", fontsize=12)
+    plt.title(f"Efectividad del Modelo Híbrido: {cultivo.upper()} (Año 2024)\nRegresión: Real vs Predicho", fontsize=14, pad=15)
+    plt.xlabel("Rendimiento Real (Toneladas/Hectárea)", fontsize=12)
+    plt.ylabel("Rendimiento Predicho (Toneladas/Hectárea)", fontsize=12)
     plt.legend(loc='upper left', fontsize=11)
     
     # Añadir texto de métricas
     from sklearn.metrics import mean_absolute_error, r2_score
     mae = mean_absolute_error(y_test, pred_blend)
     r2 = r2_score(y_test, pred_blend)
-    plt.text(len(x_index)*0.75, resultados["Real"].min(), f"MAE: {mae:.3f} t/ha\nR²: {r2:.3f}", 
-             fontsize=12, bbox=dict(facecolor='white', alpha=0.9, edgecolor='gray'))
+    
+    bbox_props = dict(boxstyle="round,pad=0.5", facecolor='white', alpha=0.9, edgecolor='gray')
+    plt.text(max_val * 0.70, min_val + (max_val - min_val) * 0.1, 
+             f"Métricas del Modelo:\nMAE: {mae:.3f} t/ha\nR²: {r2:.3f}", 
+             fontsize=12, bbox=bbox_props)
     
     plt.tight_layout()
     fig_dir = Path("reports/figures")

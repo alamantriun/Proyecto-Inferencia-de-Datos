@@ -171,18 +171,21 @@ def detect_outliers_and_score(df: pd.DataFrame) -> pd.DataFrame:
     # Variabilidad: CV del rendimiento (muy bajo=copiado, muy alto=ruidoso)
     cv_rend = grp["rendimiento_t_ha"].transform(lambda x: x.std() / x.mean() if x.mean() > 0 else 1)
     # CV óptimo entre 0.05 y 0.5 para un cultivo permanente
+    # Al usar una escala lineal con clip, el resultado debe quedar en [0,1].
     score_variabilidad = 1 - np.abs(cv_rend - 0.2).clip(0, 0.8) / 0.8
+    score_variabilidad = score_variabilidad.clip(0, 1)
     
     # Tasa de outliers del municipio
     tasa_outliers = grp["es_outlier_rendimiento"].transform("mean")
     score_outliers = 1 - tasa_outliers
+    score_outliers = score_outliers.clip(0, 1)
     
     # Score final (promedio ponderado)
     df["score_confiabilidad"] = (
         0.3 * score_cobertura + 
         0.4 * score_variabilidad + 
         0.3 * score_outliers
-    ).round(3)
+    ).clip(0, 1).round(3)
     
     print(f"  Score confiabilidad: media={df['score_confiabilidad'].mean():.3f}, "
           f"min={df['score_confiabilidad'].min():.3f}, max={df['score_confiabilidad'].max():.3f}")

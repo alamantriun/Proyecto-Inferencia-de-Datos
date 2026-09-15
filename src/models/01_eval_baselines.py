@@ -46,7 +46,7 @@ def run_baselines():
     cultivo_file = cultivo.lower().replace(' ', '_')
     años_test = config["project"].get("años_backtest", [2019, 2020, 2021, 2022, 2023, 2024])
     
-    mart_path = Path(f"data/processed/model_mart_{cultivo_file}.csv")
+    mart_path = Path("reports/tablas_entrenamiento/dataset_cafe_ml_ready.csv") if cultivo_file == "cafe" else Path(f"data/processed/model_mart_{cultivo_file}.csv")
 
     print(f"=== Evaluación de Baselines (Heurísticas) para {cultivo.upper()} ===\n")
     df = pd.read_csv(mart_path)

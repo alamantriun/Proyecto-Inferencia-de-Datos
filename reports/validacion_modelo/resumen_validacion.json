@@ -1,0 +1,40 @@
+{
+  "data_path": "reports\\tablas_entrenamiento\\dataset_cafe_ml_ready.csv",
+  "rows": 10973,
+  "columns": 48,
+  "threshold_high_yield_t_ha": 0.9233366394115502,
+  "selection_years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "holdout_year": 2024,
+  "classification_winner": "Regresión logística balanceada",
+  "classification_holdout_2024": {
+    "accuracy": 0.7463884430176565,
+    "balanced_accuracy": 0.8022471910112359,
+    "precision": 0.9614147909967846,
+    "recall": 0.6719101123595506,
+    "f1": 0.791005291005291,
+    "mcc": 0.5461661550080222
+  },
+  "confusion_matrix_2024": [
+    [
+      166,
+      12
+    ],
+    [
+      146,
+      299
+    ]
+  ],
+  "regression_winner": "Random Forest Regressor",
+  "regression_holdout_2024": {
+    "mae": 0.26954937570715354,
+    "rmse": 0.35505234645157663,
+    "r2": 0.17706863833134778
+  },
+  "status": "Compartible con cautelas"
+}

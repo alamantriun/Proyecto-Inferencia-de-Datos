@@ -1,0 +1,243 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-09-14T22:03:49.987815+00:00",
+  "status": "experimental_not_approved",
+  "purpose": "Priorización de rendimiento y riesgo productivo de café.",
+  "prohibited_uses": [
+    "Afirmar rentabilidad, ROI o éxito empresarial.",
+    "Aprobar automáticamente crédito, inversión o subsidios."
+  ],
+  "data": {
+    "path": "reports/tablas_entrenamiento/dataset_cafe_ml_ready.csv",
+    "sha256": "626541f83deefad740a66131c443f43c32e1bd8b841fbf80faa495ad89d46384",
+    "audit": {
+      "rows": 10973,
+      "columns": 48,
+      "year_min": 2007,
+      "year_max": 2024,
+      "duplicate_keys": 0,
+      "target_nulls": 0,
+      "lag_comparisons": 10215,
+      "lag_matches": 10215,
+      "missing_percent": {
+        "departamento": 0.0,
+        "municipio": 0.0,
+        "cultivo": 0.0,
+        "anio": 0.0,
+        "fuente_eva": 0.0,
+        "split": 0.0,
+        "rendimiento_t_ha": 0.0,
+        "score_confiabilidad": 0.0,
+        "dato_copiado": 0.0,
+        "lags_incompletos": 0.0,
+        "suelo_disponible": 0.0,
+        "tiene_credito": 0.0,
+        "rendimiento_lag_1": 6.907864758953795,
+        "rendimiento_lag_2": 13.077553996172423,
+        "rendimiento_lag_3": 19.31103617971384,
+        "produccion_lag_1": 6.907864758953795,
+        "area_cosechada_lag_1": 6.907864758953795,
+        "area_sembrada_lag_1": 6.907864758953795,
+        "media_rendimiento_3y": 19.948965642941765,
+        "variabilidad_rendimiento_3y": 19.948965642941765,
+        "tendencia_rendimiento_3y": 19.948965642941765,
+        "credito_total": 0.0,
+        "colocacion_total": 0.0,
+        "num_operaciones_credito": 0.0,
+        "credito_promedio_operacion": 0.0,
+        "log_credito_total": 0.0,
+        "ph_media": 22.810534949421307,
+        "materia_organica_pct_media": 22.810534949421307,
+        "fosforo_ppm_media": 23.402898022418665,
+        "calcio_meq_media": 22.810534949421307,
+        "magnesio_meq_media": 22.810534949421307,
+        "potasio_meq_media": 22.810534949421307,
+        "salinidad_ds_m_media": 22.974573954251344,
+        "num_muestras_suelo": 22.810534949421307,
+        "ph_variabilidad": 31.87824660530393,
+        "materia_organica_pct_variabilidad": 31.87824660530393,
+        "fosforo_ppm_variabilidad": 32.042285610133966,
+        "calcio_meq_variabilidad": 31.87824660530393,
+        "magnesio_meq_variabilidad": 31.87824660530393,
+        "potasio_meq_variabilidad": 31.87824660530393,
+        "salinidad_ds_m_variabilidad": 31.87824660530393,
+        "tendencia_ph": 22.810534949421307,
+        "tendencia_materia_organica_pct": 22.810534949421307,
+        "tendencia_fosforo_ppm": 22.810534949421307,
+        "tendencia_calcio_meq": 22.810534949421307,
+        "tendencia_magnesio_meq": 22.810534949421307,
+        "tendencia_potasio_meq": 22.810534949421307,
+        "tendencia_salinidad_ds_m": 22.810534949421307
+      },
+      "source_counts": {
+        "historica": 7206,
+        "reciente": 3767
+      },
+      "excluded_leakage_columns": [
+        "score_confiabilidad",
+        "dato_copiado"
+      ]
+    }
+  },
+  "targets": {
+    "regression": "rendimiento_t_ha",
+    "classification": "rendimiento_alto",
+    "high_yield_threshold_t_ha": 0.9233366394115502
+  },
+  "features": {
+    "categorical": [
+      "departamento",
+      "municipio"
+    ],
+    "numeric": [
+      "anio",
+      "lags_incompletos",
+      "rendimiento_lag_1",
+      "rendimiento_lag_2",
+      "rendimiento_lag_3",
+      "produccion_lag_1",
+      "area_cosechada_lag_1",
+      "area_sembrada_lag_1",
+      "media_rendimiento_3y",
+      "variabilidad_rendimiento_3y",
+      "tendencia_rendimiento_3y"
+    ],
+    "excluded_leakage": [
+      "score_confiabilidad",
+      "dato_copiado"
+    ],
+    "excluded_external": true
+  },
+  "training_windows": {
+    "threshold_max_year": 2018,
+    "selection_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "holdout_year": 2024,
+    "evaluation_max_year": 2023,
+    "operational_max_year": 2024
+  },
+  "classification": {
+    "winner": "catboost_weighted",
+    "selection_2019_2023": {
+      "model": "catboost_weighted",
+      "is_challenger": true,
+      "mean_accuracy": 0.7230114438784938,
+      "mean_balanced_accuracy": 0.6421540566334991,
+      "mean_precision": 0.7943330906414634,
+      "mean_recall": 0.7749603991218998,
+      "mean_f1": 0.7676665878766041,
+      "mean_mcc": 0.3187171447590111,
+      "mean_roc_auc": 0.7302119698743075,
+      "mean_pr_auc": 0.8400952054710251,
+      "mean_brier": 0.2070022758581343,
+      "mean_ece": 0.14980300027743323
+    },
+    "decision_threshold": 0.6699999999999999,
+    "holdout_2024": {
+      "accuracy": 0.5152487961476726,
+      "balanced_accuracy": 0.6573033707865168,
+      "precision": 0.9863945578231292,
+      "recall": 0.3258426966292135,
+      "f1": 0.48986486486486486,
+      "mcc": 0.3347309635022892,
+      "roc_auc": 0.8649286706223962,
+      "pr_auc": 0.9443295303521071,
+      "brier": 0.17945180755908446,
+      "ece": 0.193280230508011,
+      "tn": 176,
+      "fp": 2,
+      "fn": 300,
+      "tp": 145,
+      "prevalence_brier": 0.22950540891189058,
+      "training_prevalence": 0.554837364470392,
+      "confusion_matrix": [
+        [
+          176,
+          2
+        ],
+        [
+          300,
+          145
+        ]
+      ]
+    }
+  },
+  "regression": {
+    "winner": "catboost_regressor",
+    "selection_2019_2023": {
+      "model": "catboost_regressor",
+      "is_challenger": true,
+      "mean_mae": 0.21126858946099838,
+      "mean_rmse": 0.2911247033716152,
+      "mean_r2": -0.2893815010503958
+    },
+    "holdout_2024": {
+      "mae": 0.29886534271603643,
+      "rmse": 0.361448751269986,
+      "r2": 0.1471507014875293,
+      "lag1_mae": 0.24792421400421966,
+      "mae_improvement_vs_lag1": -0.20547056654558865
+    }
+  },
+  "gate": {
+    "status": "experimental_not_approved",
+    "checks": [
+      {
+        "name": "integridad_datos",
+        "passed": true,
+        "failure_reason": "Falló la integridad de datos."
+      },
+      {
+        "name": "mejora_mcc_vs_lag1",
+        "passed": false,
+        "failure_reason": "El MCC promedio no supera al baseline t-1 por al menos 0.02."
+      },
+      {
+        "name": "mcc_anual_no_negativo",
+        "passed": true,
+        "failure_reason": "Existe al menos un año de selección con MCC negativo."
+      },
+      {
+        "name": "mcc_holdout",
+        "passed": false,
+        "failure_reason": "El MCC 2024 es inferior a 0.50."
+      },
+      {
+        "name": "balanced_accuracy_holdout",
+        "passed": false,
+        "failure_reason": "La balanced accuracy 2024 es inferior a 0.70."
+      },
+      {
+        "name": "mejora_mae_regresion",
+        "passed": false,
+        "failure_reason": "La regresión no mejora al baseline t-1 al menos 5% en MAE 2024."
+      },
+      {
+        "name": "brier_vs_prevalencia",
+        "passed": true,
+        "failure_reason": "El Brier calibrado no mejora la probabilidad constante por prevalencia."
+      }
+    ],
+    "failed_checks": [
+      "El MCC promedio no supera al baseline t-1 por al menos 0.02.",
+      "El MCC 2024 es inferior a 0.50.",
+      "La balanced accuracy 2024 es inferior a 0.70.",
+      "La regresión no mejora al baseline t-1 al menos 5% en MAE 2024."
+    ],
+    "regression_mae_improvement": -0.20547056654558865
+  },
+  "software_versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "scikit-learn": "1.9.1",
+    "imbalanced-learn": "0.14.2",
+    "catboost": "1.2.10",
+    "joblib": "1.6.0"
+  },
+  "random_state": 42
+}

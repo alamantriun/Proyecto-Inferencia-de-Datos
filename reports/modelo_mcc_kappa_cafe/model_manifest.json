@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-09-15T18:45:47.072544+00:00",
+  "status": "target_not_met",
+  "winner": "logistic_smotenc",
+  "recipe": {
+    "name": "logistic_smotenc",
+    "decision_threshold": 0.5499999999999999
+  },
+  "target_threshold_t_ha": 0.9258517034068136,
+  "development_years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "final_holdout_year": 2025,
+  "gate": {
+    "status": "target_not_met",
+    "threshold": 0.85,
+    "failed_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "missing_years": [],
+    "missing_baseline_years": [],
+    "minimum_mcc": 0.1382255297278766,
+    "minimum_kappa": 0.07663335661999215,
+    "worst_year_improvement_over_persistence": 0.0054398853183103,
+    "failed_checks": [
+      "MCC o Kappa inferior a 0.85 en años: [2019, 2020, 2021, 2022, 2023, 2024, 2025].",
+      "La mejora del peor año frente a persistencia es 0.0054, inferior a 0.02."
+    ]
+  },
+  "artifact_hashes_sha256": {
+    "01_cobertura_fuentes_anual.png": "b63903a9e02ec1c457cde8693b241a1fba0889e5d735978182400be8df837964",
+    "02_distribucion_rendimiento_inicial.png": "87e8c230e1cbac810702d4a62054e09db0b5bfbe71a395f63dc223d637683317",
+    "03_boxplot_rendimiento_anual.png": "af07b6ecd75b35912537bec353e46575f18d515c7ea1eaf4abf20d32fe31ee90",
+    "04_mapa_nulos_cobertura.png": "74298117e5944ed20118ea86ccc754c09891b7187a4a75f17c3acbf2801b77bb",
+    "05_balance_clases_anual.png": "0a2d4c72ee12410536853a2aa5c089b1f3ec7c5f87197c5dc2ed2c7a4d66a4c0",
+    "06_balance_smotenc.png": "b59e6b926c6f58174b4218a2da5f95f2273731da9879324455732b8b6a9573fe",
+    "07_metricas_mcc_kappa_anuales.png": "790798fff122079e1404162a20c2449c39af633c57411dcef86eb612265335e4",
+    "08_matrices_confusion_2019_2025.png": "bcaf70ffb9ee4ed5bbf28cbde6957562142c5bf733c46185ddf1ea60ce55e495",
+    "09_matriz_confusion_consolidada.png": "f48a02f7b68dba641eeec3acd4228a07562d4777d6584a2f5bf923b440476c17",
+    "10_metricas_weka_clases.png": "8c00730ad4f00c28c526a130ba7358222684b888044168f2bb73c217fcd90d4d",
+    "11_calibracion_probabilidades.png": "bcf41d51fdc0a7965d7650c2476bc1b90093a324620d9ef0b4386fc562843151",
+    "12_desempeno_cambios_clase.png": "da5c6ad888484e499b122cf3148027b1c949ba3d02c7e8f0b9fa0a037f1bda32",
+    "13_importancia_variables.png": "26fbcae9bbe9842ce292ce2b8275ec12f77939db456901d9a6c20ac3d7c64498",
+    "14_peor_resultado_anual_modelos.png": "6dbfa941532b62a27a0f2bc8f7432cff92acec4e18ef6c3792f22dc4f3ab5648",
+    "analysis_bundle.joblib": "ba212994292b14a9f8b62f49b2305a14d2cfb3ae5bfee1396d353a7bfaf57412",
+    "balance_smotenc.csv": "4a6cdc0fc76ed39d09f4e10b11a1ac02d4fa56941db5de14a1936518615925b7",
+    "dataset_modelo.csv": "19cbbd016055b9ac46b85030f27e486eb88e6f06380f15c5605d17405ccc4314",
+    "diccionario_variables.csv": "b03ca75933b26a7ca448fba3b4d76aef901ef89ca66515759e539d71578f2aa9",
+    "importancia_variables.csv": "1bb31faf6eff83ab0e0ff09b0bf9213913124c4f8df3a594f5fee2ecefcf649d",
+    "matrices_confusion_2019_2025.csv": "edfc646cb2010360ab5fbdf52862f801a0b79678d924b4bf0a5ac49f21a65377",
+    "metricas_anuales_modelo_seleccionado.csv": "704b2f5123fe99e4a0954e945b48cefa6ebc5c3308e977dfcfff42d6be41e135",
+    "metricas_anuales_todos_modelos.csv": "c377804646206df7f9968f7b14d851ed3103aa590120519aa7a7cf2a5cd103bf",
+    "metricas_weka_modelo_seleccionado.csv": "1c12223f43f39c5615c4907635780218663c6e93316a876f8a0190e10c40b334",
+    "metricas_weka_todos_modelos.csv": "f8f43032e29908dc34c601108b0abe459fd2b29e2a62cd7b1b285068f2de7637",
+    "MODEL_CARD.md": "d0a5dbb7958917143d3de5305250c7a42b8f7b3e0161cda1a2877eb4286e98e2",
+    "modelo_evaluado_2025.joblib": "3b6eac592e1d568c09ae8cdbf6ccf350b306acd21d29c6fc3319d677c7b7dffb",
+    "predicciones_modelo_seleccionado_2019_2025.csv": "2b1a0b535860645c1a1613ae1591ff751505334b73c9b1fc536ebb6a3b876508",
+    "predicciones_todos_modelos_2019_2024.csv": "781f277baecb4b16d51fd0b3eda44131508af3a11e1953deed09116489bb9776",
+    "recipe_frozen_before_2025.json": "8cb364f4eb692b8e077ab6a144172b55436ae26a03d5ea6e71d198a4ffc803fa",
+    "resumen_modelos.csv": "ffde7b55c3d9047f325e3f426032282fd392636456606805ee5665d34d703301",
+    "source_manifest.json": "3641f65793729d15a4146c07b08b781148564f4e40c1cef0567cf2a83406c3a7"
+  }
+}

@@ -55,16 +55,16 @@ features:
   - departamento
 fuentes:
   eva_historica:
-    "a\xF1os":
+    años:
     - 2007
     - 2018
     id_dataset: 2pnw-mmge
     rol: historial
     url: https://www.datos.gov.co/resource/2pnw-mmge.json
   eva_reciente:
-    "a\xF1os":
+    años:
     - 2019
-    - 2024
+    - 2025
     id_dataset: uejq-wxrr
     rol: target
     url: https://www.datos.gov.co/resource/uejq-wxrr.json
@@ -78,6 +78,16 @@ fuentes:
     id_dataset: s54a-sgyg
     rol: feature_climatica
     url: https://www.datos.gov.co/resource/s54a-sgyg.json
+  divipola_municipios:
+    version: 2025
+    rol: llave_geografica
+    url: https://geoportal.dane.gov.co/mparcgis/rest/services/Divipola/Serv_DIVIPOLA_MGN_2025/FeatureServer/317/query
+  nasa_power_mensual:
+    años:
+    - 2006
+    - 2024
+    rol: feature_climatica_respaldo
+    url: https://power.larc.nasa.gov/api/temporal/monthly/regional
   sipsa_precios:
     id_dataset: gkqq-k3k5
     rol: feature_economica
@@ -96,7 +106,7 @@ fuentes:
     rol: feature_territorial
 leakage:
   reglas_duras:
-  - "No usar rendimiento, produccion ni area_cosechada del a\xF1o t como feature"
+  - No usar rendimiento, produccion ni area_cosechada del año t como feature
   - Solo clima disponible <= fecha_corte
   - Solo precios anteriores a fecha_corte
   - Solo muestras de suelo anteriores a fecha_corte
@@ -115,7 +125,7 @@ metricas:
   - MAPE
   - R2
 model_mart:
-  "a\xF1o_col": anio
+  año_col: anio
   cultivo_col: cultivo
   departamento_col: departamento
   id_cols:
@@ -126,9 +136,9 @@ model_mart:
   target_col: rendimiento_t_ha
 modelos:
   baselines:
-  - descripcion: "Rendimiento del a\xF1o anterior"
+  - descripcion: Rendimiento del año anterior
     nombre: B1_lag1
-  - descripcion: "Promedio de los \xFAltimos 3 a\xF1os"
+  - descripcion: Promedio de los últimos 3 años
     nombre: B2_media3y
   ml:
   - libreria: sklearn
@@ -139,16 +149,17 @@ modelos:
     nombre: CatBoost
     principal: true
 project:
-  "a\xF1os_backtest":
+  años_backtest:
   - 2019
   - 2020
   - 2021
   - 2022
   - 2023
   - 2024
-  cultivo_mvp: arroz
-  descripcion: Inferencia predictiva de rendimiento agricola en Colombia. Soporta
-    cultivos permanentes y transitorios.
+  holdout_final: 2025
+  cultivo_mvp: cafe
+  descripcion: Inferencia predictiva de rendimiento en CAFÉ colombiano. Modelo ML
+    optimizado para predicción y proyección de ingresos en el cultivo del café.
   fecha_corte_train_max: 2018
-  nombre: AgroRank-MultiCrop
+  nombre: AgroRank-Café
   trm_usd_cop: 4000

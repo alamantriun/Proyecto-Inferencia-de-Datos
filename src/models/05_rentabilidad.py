@@ -22,16 +22,24 @@ def calcular_rentabilidad():
     trm = config["project"].get("trm_usd_cop", 4000)
     
     ultimo_anio = max(años_test)
-    mart_path = Path(f"data/processed/model_mart_{cultivo_file}.csv")
+    mart_path = Path("reports/tablas_entrenamiento/dataset_cafe_ml_ready.csv") if cultivo_file == "cafe" else Path(f"data/processed/model_mart_{cultivo_file}.csv")
+    panel_path = Path(f"data/processed/panel_{cultivo_file}.csv")
 
     print(f"=== Análisis de Rentabilidad y Negocio ({cultivo.upper()} - {ultimo_anio}) ===")
     
     if not mart_path.exists():
         print(f"❌ No se encontró {mart_path}")
         return
-        
+    
+    # Cargar datos normalizados (para modelo ML)
     df = pd.read_csv(mart_path)
-    df = df.dropna(subset=["rendimiento_t_ha", "precio_internacional_usd", "area_cosechada_lag_1"])
+    df = df.dropna(subset=["rendimiento_t_ha"])
+    
+    # Cargar datos ORIGINALES sin normalizar (para cálculo de ingresos)
+    df_original = None
+    if panel_path.exists():
+        df_original = pd.read_csv(panel_path)
+        print(f"✓ Cargados datos originales sin normalizar desde {panel_path}")
     
     # Entrenar modelo con variables completas (F)
     # Fix Error #5: Usar MISMOS hiperparámetros que 02_train_ml.py
@@ -41,6 +49,8 @@ def calcular_rentabilidad():
     
     train = df[df["anio"] < ultimo_anio]
     test = df[df["anio"] == ultimo_anio].copy()
+    # Convertir a 2025 (Futuro) asumiendo precio constante
+    test["anio"] = ultimo_anio + 1
     
     if len(train) == 0 or len(test) == 0:
         print("❌ No hay suficientes datos para entrenar o evaluar.")
@@ -68,46 +78,85 @@ def calcular_rentabilidad():
     else:
         test["rendimiento_inferido"] = np.clip(pred_ml, 0, None)
     
-    # Cálculo de métrica de negocio: Ingreso Esperado (COP)
-    # Ingreso = Rendimiento (t/ha) * Area (ha) * Precio (USD/t) * TRM (COP/USD)
-    # Asumimos que el área a cosechar es aproximadamente la del año anterior (ex-ante)
-    test["produccion_esperada_t"] = test["rendimiento_inferido"] * test["area_cosechada_lag_1"]
-    test["ingreso_esperado_cop"] = test["produccion_esperada_t"] * test["precio_internacional_usd"] * trm
+    # Para calcular ingresos reales: necesitamos desnormalizar
+    # Cargar datos originales y hacer merge correcto
+    print(f"✓ Entrenando modelo y calculando proyecciones...")
     
-    # Ordenar municipios más rentables
-    top_rentables = test.sort_values("ingreso_esperado_cop", ascending=False).head(15)
+    if df_original is None:
+        print("❌ No se encontraron datos originales.")
+        return
     
-    print(f"\nTop 15 Municipios con mayor Ingreso Esperado ({ultimo_anio}):")
-    cols_show = ["departamento", "municipio", "rendimiento_inferido", "produccion_esperada_t", "ingreso_esperado_cop"]
+    # Obtener datos del año a proyectar (original, sin normalizar)
+    df_orig_test = df_original[df_original["anio"] == ultimo_anio].copy()
+    df_orig_test = df_orig_test[["departamento", "municipio", "area_cosechada_ha", "rendimiento_t_ha"]].copy()
+    df_orig_test.rename(columns={"area_cosechada_ha": "area_original", "rendimiento_t_ha": "rendimiento_base_original"}, inplace=True)
     
-    # Imprimir bonito
+    test_merged = test.merge(df_orig_test, on=["departamento", "municipio"], how="left")
+    
+    rendimiento_mean = df_original["rendimiento_t_ha"].mean()
+    rendimiento_std = df_original["rendimiento_t_ha"].std()
+    
+    # Escenarios de precio de Bolsa NY (2025-2029) igual que 06_forecast
+    precios = [5500, 4500, 3800, 3500, 3500]
+    precio_promedio_5y = sum(precios) / len(precios)
+    
+    # Desnormalizar rendimiento
+    test_merged["rendimiento_inferido_denorm"] = (test_merged["rendimiento_inferido"] * rendimiento_std) + rendimiento_mean
+    test_merged["rendimiento_inferido_denorm"] = np.clip(test_merged["rendimiento_inferido_denorm"], 0, None)
+    
+    test_merged = test_merged.dropna(subset=["area_original", "rendimiento_inferido_denorm", "rendimiento_base_original"])
+    
+    # Calcular ingreso base 2024 (asumiendo precio base conservador de 4000 USD/t)
+    precio_base_2024 = 4000
+    test_merged["ingreso_base_cop"] = test_merged["rendimiento_base_original"] * test_merged["area_original"] * precio_base_2024 * trm
+    
+    # Calcular ingreso promedio a 5 años
+    test_merged["produccion_esperada_t"] = test_merged["rendimiento_inferido_denorm"] * test_merged["area_original"]
+    test_merged["ingreso_promedio_5y_cop"] = test_merged["produccion_esperada_t"] * precio_promedio_5y * trm
+    test_merged["rendimiento_original"] = test_merged["rendimiento_inferido_denorm"]
+    
+    # Calcular porcentaje de crecimiento
+    test_merged["pct_crecimiento"] = ((test_merged["ingreso_promedio_5y_cop"] - test_merged["ingreso_base_cop"]) / test_merged["ingreso_base_cop"]) * 100
+    # Evitar divisiones por cero o nulos
+    test_merged["pct_crecimiento"] = test_merged["pct_crecimiento"].replace([np.inf, -np.inf], np.nan).fillna(0)
+    
+    test = test_merged.copy()
+    top_rentables = test.sort_values("ingreso_promedio_5y_cop", ascending=False).head(15)
+    
+    print(f"\nTop 15 Municipios: Ingreso Promedio (2025-2029):")
+    cols_show = ["departamento", "municipio", "rendimiento_original", "produccion_esperada_t", "ingreso_promedio_5y_cop"]
+    
     for _, row in top_rentables.iterrows():
-        ingreso_millones = row["ingreso_esperado_cop"] / 1e6
+        ingreso_millones = row["ingreso_promedio_5y_cop"] / 1e6
         print(f"{row['departamento'][:15]:<15} | {row['municipio'][:15]:<15} | "
-              f"Rend: {row['rendimiento_inferido']:.2f} t/ha | "
+              f"Rend: {row['rendimiento_original']:.2f} t/ha | "
               f"Prod: {row['produccion_esperada_t']:,.1f} t | "
               f"Ingreso: ${ingreso_millones:,.0f} Millones COP")
               
-    # Generar visualización
     plt.figure(figsize=(12, 7))
     labels = top_rentables["municipio"] + " (" + top_rentables["departamento"] + ")"
-    valores_millones = top_rentables["ingreso_esperado_cop"] / 1e6
+    valores_millones = top_rentables["ingreso_promedio_5y_cop"] / 1e6
     
     bars = plt.barh(labels[::-1], valores_millones[::-1], color="#27ae60")
     
-    for p in bars:
+    # Los valores se graficaron al revés ([::-1]) para que el mayor quede arriba.
+    # Necesitamos extraer la columna y voltearla para emparejarla con las barras.
+    pcts = top_rentables["pct_crecimiento"].values[::-1]
+    
+    for p, pct in zip(bars, pcts):
         width = p.get_width()
+        sign = "+" if pct >= 0 else ""
         plt.text(
             width + (valores_millones.max() * 0.01),
             p.get_y() + p.get_height() / 2,
-            f"${width:,.0f}M",
+            f"${width:,.0f}M ({sign}{pct:.1f}%)",
             ha="left",
             va="center",
             fontweight="bold"
         )
         
-    plt.title(f"Top 15 Municipios con Mayor Ingreso Esperado ({ultimo_anio}) - {cultivo.upper()}", fontsize=14, pad=20)
-    plt.xlabel("Ingreso Bruto Esperado (Millones COP)", fontsize=12)
+    plt.title(f"Medición a Futuro: Top 15 Municipios por Ingreso Promedio (2025 - 2029) - {cultivo.upper()}", fontsize=14, pad=20)
+    plt.xlabel("Ingreso Bruto Calculado (Millones COP)", fontsize=12)
     plt.ylabel("")
     plt.xlim(0, valores_millones.max() * 1.15)
     plt.tight_layout()

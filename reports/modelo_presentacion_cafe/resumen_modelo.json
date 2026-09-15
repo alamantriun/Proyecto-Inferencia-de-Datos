@@ -1,0 +1,43 @@
+{
+  "status": "presentation_ready_not_production_approved",
+  "winner": "logistic_smotenc",
+  "model_family": "logistic_regression",
+  "selection_years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "evaluation_year": 2024,
+  "decision_threshold": 0.5,
+  "high_yield_threshold_t_ha": 0.9233366394115502,
+  "weka_precision_target": 0.85,
+  "meets_weka_precision_85": true,
+  "holdout_2024": {
+    "instances": 623,
+    "correctly_classified": 516,
+    "incorrectly_classified": 107,
+    "accuracy": 0.8282504012841091,
+    "weighted_precision": 0.860749379116726,
+    "precision_high": 0.9470899470899471,
+    "recall_high": 0.8044943820224719,
+    "mcc": 0.640105811358911,
+    "confusion_matrix": [
+      [
+        158,
+        20
+      ],
+      [
+        87,
+        358
+      ]
+    ]
+  },
+  "limitations": [
+    "Weighted Precision no equivale a accuracy.",
+    "El desempeño cambia entre años por deriva de datos.",
+    "2024 ya fue inspeccionado durante el desarrollo; una aprobación futura requiere datos nuevos, idealmente 2025.",
+    "La predicción apoya priorización y requiere revisión humana."
+  ]
+}
